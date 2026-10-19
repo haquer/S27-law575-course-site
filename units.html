@@ -4,6 +4,7 @@
   v1.0 · Jul 2026 · Unit windows page: five cards, phase-aware actions, calendar downloads
   v2.0 · Jul 2026 · Docket Board design adopted; accessibility harmonized
   v2.1 · Aug 2026 · Renamed Unit Circles
+  v3.9 · Oct 19, 2026 · Google Calendar button live:  the subscribe link for the LAW 575 Internet Law calendar
   v3.8 · Oct 19, 2026 · Add-to-Google-Calendar button for the subscribed course calendar (shown once its link is set), with the Tangerine tip;  the .ics download is the fallback
   v3.7 · Oct 19, 2026 · Calendar files:  every entry and calendar titled LAW 575 Internet Law;  orange colour carried in the file (COLOR, X-APPLE-CALENDAR-COLOR) with a note for apps that ignore it;  file names say InternetLaw
   v3.6 · Oct 19, 2026 · Calendar files carry every date in force:  each annotation set's due date and its close (first set Jan 20;  spring-break closes Mar 15;  closes after classes end);  first class, no-class day, spring break;  circle meetings;  circle-work closes;  the last day for each late memo
@@ -145,7 +146,7 @@ const WINDOWS = [
 const SIGNUP = "2027-02-01";
 /* The subscribe link printed by the Course Calendar Builder (an Apps Script in the professor's account).
    Empty:  the Google Calendar button stays hidden and the file download remains. */
-const CAL_SUBSCRIBE = "";
+const CAL_SUBSCRIBE = "https://calendar.google.com/calendar/u/0?cid=Y18xZWM1NTljMTQ3OTgyYjQ1ZTViZTJiNjU5MTdlMTQ2ODg3M2I2NjhiODI0NzlhYjI4N2JmMGQyMjU4MGE5YzBiQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20";
 const COURSE_EVENTS = [
   ["2027-01-11","First class (Session 1);  syllabus and technical primer"],
   ["2027-01-13","Tech Digest:  primer annotated (this is also the first annotation set)"],
