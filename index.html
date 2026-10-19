@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Law 575 Internet Law</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --signal:#E8650E; --deep:#93481B; --barink:#2C1806; --mist:#EBD9BE;
+    --pale:#F9F0E1; --slate:#F0DCC5; --ink:#37291B; --paper:#FCF9F4; --red:#B32222; --redlite:#F2705E;
+    --gold:#C9A227; --goldbg:#FBF2D9; --goldtext:#7E6410;
+    --faint:#8A7359;
+    --head:'Archivo','Helvetica Neue',Helvetica,sans-serif;
+    --body:'Source Serif 4',Charter,Georgia,serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:var(--body); color:var(--ink); background:var(--paper); line-height:1.6;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;}
+  ::selection{background:var(--mist);}
+  .head{border-bottom:5px solid var(--signal); background:var(--barink); padding:28px 28px 22px;
+    display:flex; align-items:center; gap:28px; flex-wrap:wrap;}
+  .head .headtext{flex:1 1 480px; min-width:300px;}
+  .bitmoji{flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:8px;}
+  .bitmoji img{width:118px; height:118px; display:block; border:3px solid var(--signal);
+    border-radius:50%; background:var(--pale); box-shadow:0 0 0 4px rgba(246,235,221,.16); object-fit:contain;}
+  .bitmoji span{font-family:var(--head); font-size:.62rem; font-weight:700; letter-spacing:.14em;
+    text-transform:uppercase; color:#C7A985;}
+  .head h1{font-family:var(--head); color:#F6EBDD; font-weight:900; font-size:1.6rem; letter-spacing:-.02em;}
+  .head p{font-family:var(--head); color:#C7A985; font-size:.82rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; margin-top:6px;}
+  .head .headtext p:last-child{text-transform:none; letter-spacing:0; font-size:.9rem; margin-top:12px;}
+  .head p a:hover{color:var(--signal) !important;}
+  .wrap{display:grid; grid-template-columns:300px 1fr; min-height:calc(100vh - 84px);}
+  /* ---- components rail ---- */
+  .comps{border-right:1px solid var(--mist); padding:20px 16px; background:#fff;}
+  .comps h2{font-family:var(--head); font-size:.68rem; font-weight:700; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--faint); margin-bottom:12px;}
+  .outband h2, .ess h2, .past h2{font-family:var(--head); color:var(--barink); font-size:1.15rem; font-weight:800; position:relative; padding-left:16px;}
+  .outband h2::before, .ess h2::before, .past h2::before{content:""; position:absolute; left:0; top:4px; bottom:4px; width:5px; background:var(--signal);}
+  .outband h2{margin-bottom:12px;}
+  button.comp{
+    display:block; width:100%; text-align:left; font-family:var(--head); font-weight:600;
+    font-size:.88rem; background:#fff; border:1px solid var(--mist); color:var(--barink);
+    padding:10px 12px; margin-bottom:7px; cursor:pointer; border-left-width:5px; border-left-style:solid;
+    transition:all .15s ease; box-shadow:0 1px 2px rgba(44,24,6,.04);
+  }
+  button.comp .pct{float:right; color:var(--faint); font-size:.74rem; font-weight:500; margin-left:8px; padding-top:2px;}
+  button.comp:hover{background:var(--pale); border-color:var(--deep);}
+  button.comp:focus-visible, button.pill:focus-visible{outline:3px solid var(--deep); outline-offset:2px;}
+  button.comp.on{background:var(--barink); border-color:var(--barink); color:#F6EBDD; box-shadow:0 1px 3px rgba(44,24,6,.25);}
+  button.comp.on .pct{color:#D9BE9A;}
+  button.comp.serves{background:var(--pale); border-color:var(--deep);}
+  button.comp.faded{opacity:.35;}
+  button.comp.port{border-left-color:var(--deep);}
+  button.comp.circ{border-left-color:var(--barink);}
+  button.comp.disc{border-left-color:var(--signal);}
+  button.comp.tech{border-left-color:var(--gold);}
+  button.comp.annot{border-left-color:var(--mist);}
+  .grp{font-family:var(--head); font-size:.62rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--faint); margin:18px 0 7px;}
+  .grp:first-child{margin-top:0;}
+  button.comp.cite{border-left-color:var(--red);}
+  button.comp.fb{border-left-color:var(--slate);}
+  button.clear{font-family:var(--head); font-weight:600; font-size:.76rem; letter-spacing:.04em; background:none;
+    border:1px dashed var(--deep); color:var(--deep); padding:6px 12px; cursor:pointer; margin-top:6px;
+    transition:background .12s ease;}
+  button.clear:hover{background:var(--pale);}
+  .essentials{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:26px; padding:26px 28px 6px; border-top:1px solid var(--mist); background:#fff;}
+  .ess h2{margin-bottom:10px;}
+  .passlist{margin:0 0 0 18px; font-size:.92rem;}
+  .passlist li{margin-bottom:7px;}
+  .passlist b{font-family:var(--head); color:var(--barink);}
+  .passlist a{color:var(--deep); font-weight:700;}
+  .essnote{font-family:var(--head); font-size:.8rem; color:var(--faint); margin-top:10px;}
+  .essnote a{color:var(--deep); font-weight:700;}
+  .essbody{font-size:.92rem;}
+  .docstrip a{display:block; font-family:var(--head); font-size:.86rem; font-weight:600; color:var(--barink); text-decoration:none; border:1px solid var(--mist); border-left:4px solid var(--signal); background:#fff; padding:8px 12px; margin-bottom:7px; box-shadow:0 1px 3px rgba(44,24,6,.07);}
+  .docstrip a:hover{border-left-color:var(--deep); background:var(--pale);}
+  .announce{padding:14px 28px 0;}
+  .announce .ann{background:#fff; border:1px solid var(--mist); border-left:6px solid var(--signal);
+    padding:13px 18px; margin-bottom:10px; font-family:var(--head); font-size:.9rem; box-shadow:0 1px 3px rgba(44,24,6,.07);}
+  .announce .ann b{color:var(--barink); font-weight:700;}
+  .announce .ann .when{float:right; font-size:.72rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--faint); margin-left:16px;}
+  .nowband{background:var(--pale); border-bottom:1px solid var(--mist); padding:18px 28px 20px;
+    display:flex; gap:28px; flex-wrap:wrap; align-items:flex-start;}
+  .nextcard{background:var(--barink); border-top:6px solid var(--signal); padding:16px 22px 18px;
+    flex:1 1 400px; min-width:320px; box-shadow:0 1px 3px rgba(44,24,6,.07);}
+  .nc-kicker{font-family:var(--head); font-size:.64rem; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--signal); font-weight:800; margin-bottom:6px;}
+  .nowline{font-family:var(--head); font-weight:600; color:#F6EBDD; font-size:1rem; line-height:1.45;}
+  .nowline b{color:#FFC896; font-weight:700;}
+  .nowactions{margin:14px 0 0;}
+  .nowactions a{font-family:var(--head); font-size:.72rem; color:#fff; background:var(--signal);
+    text-decoration:none; padding:9px 15px; margin-right:10px; margin-top:6px; display:inline-block;
+    font-weight:700; letter-spacing:.05em; text-transform:uppercase; transition:background .12s ease;}
+  .nowactions a:hover{background:#FF8B33; color:var(--barink);}
+  .fourwrap{flex:1 1 320px; min-width:280px;}
+  .fourlabel{font-family:var(--head); font-size:.64rem; font-weight:700; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--faint);}
+  .fourweeks{list-style:none; margin:6px 0 0; padding:0; max-width:560px; font-family:var(--head); font-size:.84rem;}
+  .fourweeks li{display:flex; justify-content:space-between; gap:18px; padding:5px 0 5px 14px; border-bottom:1px solid var(--mist); align-items:baseline; position:relative;}
+  .fourweeks li::before{content:""; position:absolute; left:0; top:50%; width:7px; height:7px; transform:translateY(-50%); border-radius:50%; background:var(--mist);}
+  .fourweeks li b{color:var(--barink); font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .caplinks{display:block; margin-top:10px; font-family:var(--head); font-size:.8rem;}
+  .caplinks a{color:var(--deep); font-weight:700;}
+  .caplinks a:hover{color:var(--signal);}
+  .caption{
+    margin-top:18px; font-size:.88rem; line-height:1.6; background:var(--pale); border:1px solid var(--mist);
+    border-left:4px solid var(--signal); padding:13px 15px; white-space:pre-wrap; min-height:88px;
+  }
+  /* ---- outcomes band ---- */
+  .outband{padding:18px 28px 10px; border-bottom:1px solid var(--mist); background:#fff;}
+  .pill{
+    font-family:var(--head); font-weight:600; font-size:.78rem; display:inline-block;
+    border:1px solid var(--mist); color:var(--deep); background:#fff;
+    padding:5px 13px; margin:0 6px 7px 0; border-radius:0; cursor:pointer; transition:all .18s ease;
+    box-shadow:0 1px 2px rgba(44,24,6,.04);
+  }
+  .pill:hover{border-color:var(--deep);}
+  .pill .k{font-size:.62rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-right:7px;
+    color:var(--faint);}
+  .pill.slo{border-width:1.5px; border-color:var(--deep);}
+  .pill.lit{background:var(--deep); color:#fff; border-color:var(--deep);}
+  .pill.lit .k{color:var(--mist); opacity:1;}
+  .pill.on{background:var(--barink); color:#fff; border-color:var(--barink); box-shadow:0 1px 3px rgba(44,24,6,.25);}
+  .pill.on .k{color:#FF9C4D; opacity:1;}
+  .pill.faded{opacity:.3;}
+  /* ---- this week panel (v2.3) ---- */
+  .weekwrap{margin-top:14px;}
+  .weeklabel{font-family:var(--head); font-size:.78rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--deep);}
+  .thisweek{list-style:none; margin:6px 0 0; padding:0; max-width:560px; font-family:var(--head); font-size:.84rem;}
+  .thisweek li{padding:5px 0 5px 14px; border-bottom:1px solid var(--mist); position:relative;}
+  .thisweek li::before{content:""; position:absolute; left:0; top:13px; width:7px; height:7px; border-radius:50%; background:var(--signal);}
+  .thisweek b{color:var(--barink); white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .thisweek .rdg{color:var(--deep); font-weight:700;}
+  .thisweek .seg{color:var(--signal); font-weight:800;}
+  /* ---- expandable week detail (v2.3) ---- */
+  .row.expandable{cursor:pointer;}
+  .row .caret{font-family:var(--head); color:var(--deep); font-size:.8rem; margin-left:6px; user-select:none;}
+  .wkdetail{margin-top:7px; padding:7px 0 2px 12px; border-left:2px solid var(--mist); font-size:.86rem;}
+  .wkdetail div{padding:2px 0; color:var(--ink);}
+  .wkdetail b{font-variant-numeric:tabular-nums; color:var(--barink);}
+  .wkdetail .rdg{color:var(--deep); font-weight:700;}
+  .wkdetail .seg{color:var(--signal); font-weight:800;}
+  /* ---- full schedule view (v2.4) ---- */
+  .schedbtn{display:inline-block; margin-top:8px; font-family:var(--head); font-size:.82rem; font-weight:700; color:var(--deep); background:none; border:none; padding:0; cursor:pointer; text-decoration:none;}
+  .schedbtn:hover{color:var(--signal);}
+  .schedview{position:fixed; inset:0; background:var(--pale); z-index:60; overflow-y:auto; display:none; padding:34px 6vw 60px;}
+  .schedview.open{display:block;}
+  .schedview h2{font-family:var(--head); color:var(--barink); font-size:1.5rem; margin:0 0 2px;}
+  .schedview .sub{font-family:var(--head); font-size:.85rem; color:var(--deep); margin-bottom:22px;}
+  .schedclose{position:fixed; top:18px; right:5vw; font-family:var(--head); font-size:.9rem; font-weight:800; color:var(--deep); background:var(--mist); border:none; border-radius:6px; padding:7px 14px; cursor:pointer; z-index:61;}
+  .schedwk{font-family:var(--head); font-size:.8rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--signal); margin:20px 0 6px; border-bottom:2px solid var(--mist); padding-bottom:3px; max-width:760px;}
+  .schedrow{display:flex; gap:16px; padding:6px 0; border-bottom:1px solid var(--mist); max-width:760px; align-items:baseline;}
+  .schedrow .d{font-family:var(--head); font-size:.84rem; font-weight:700; color:var(--barink); min-width:92px; white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .schedrow .t{font-size:.95rem; color:var(--ink); flex:1;}
+  .schedrow .r{font-family:var(--head); font-size:.84rem; font-weight:700; color:var(--deep); white-space:nowrap;}
+  .schedrow .seg{color:var(--signal); font-weight:800; font-family:var(--head); font-size:.8rem;}
+  .schedwin{margin-top:34px; max-width:760px;}
+  .schedwin table{width:100%; border-collapse:collapse; font-family:var(--head); font-size:.84rem;}
+  .schedwin th{text-align:left; color:var(--deep); font-weight:800; border-bottom:2px solid var(--mist); padding:5px 8px 5px 0;}
+  .schedwin td{border-bottom:1px solid var(--mist); padding:5px 8px 5px 0; color:var(--ink); font-variant-numeric:tabular-nums;}
+  @media print{ body > *:not(.schedview){display:none !important;} .schedview{position:static; display:block !important; padding:0;} .schedclose{display:none;} }
+  /* ---- timeline ---- */
+  .run{padding:20px 28px 24px; max-width:880px;}
+  .row{
+    display:grid; grid-template-columns:120px 1fr; gap:14px; padding:11px 12px;
+    border-left:4px solid var(--mist); margin-bottom:6px; background:#fff;
+    border-top:1px solid rgba(235,217,190,.5); border-right:1px solid rgba(235,217,190,.5); border-bottom:1px solid rgba(235,217,190,.5);
+    transition:opacity .25s ease, background .25s ease, border-color .25s ease;
+  }
+  .row .when{font-family:var(--head); font-size:.78rem; color:var(--faint); font-weight:700;
+    letter-spacing:.03em; padding-top:3px; font-variant-numeric:tabular-nums;}
+  .row .what b{font-family:var(--head); font-weight:700; color:var(--barink); font-size:.94rem;
+    display:block; margin-bottom:5px; letter-spacing:-.005em;}
+  .chip{
+    display:inline-block; font-family:var(--head); font-weight:500; font-size:.75rem;
+    padding:3px 10px; margin:2px 5px 2px 0; border:1px solid var(--mist); color:var(--deep);
+    background:var(--paper); border-radius:0; transition:all .18s ease;
+  }
+  .row.dim{opacity:.28;}
+  .row.lit{background:var(--pale); border-left-color:var(--signal); border-top-color:var(--mist);
+    border-right-color:var(--mist); border-bottom-color:var(--mist);}
+  .lit .chip.hit{font-weight:700; transform:translateY(-1px);}
+  .chip.port.hit{background:var(--deep); color:#fff; border-color:var(--deep);}
+  .chip.circ.hit{background:var(--barink); color:#fff; border-color:var(--barink);}
+  .chip.disc.hit{background:var(--signal); color:#fff; border-color:var(--signal);}
+  .chip.tech.hit{background:var(--goldbg); color:var(--goldtext); border-color:var(--gold);}
+  .chip.annot.hit{background:#fff; color:var(--deep); border-color:var(--deep); font-weight:700;}
+  .chip.cite.hit{background:#fff; color:var(--red); border-color:var(--red); border-style:solid; border-width:1.5px;}
+  .chip.fb.hit{background:var(--slate); color:var(--barink); border-color:var(--slate);}
+  /* ---- past classes archive ---- */
+  .past{padding:22px 28px 8px; border-top:1px solid var(--mist); background:#fff;}
+  .past h2{margin-bottom:6px;}
+  .past .pastnote{font-family:var(--head); font-size:.84rem; color:var(--faint); margin-bottom:16px;}
+  .pastgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px;}
+  .pastcard{border:1px solid var(--mist); border-top:6px solid var(--signal); background:#fff; display:flex; flex-direction:column; box-shadow:0 1px 3px rgba(44,24,6,.07);}
+  .pastcard .pc-when{font-family:var(--head); font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); padding:12px 14px 0; font-variant-numeric:tabular-nums;}
+  .pastcard .pc-topic{font-family:var(--head); font-weight:700; color:var(--barink); font-size:.92rem; line-height:1.35; padding:4px 14px 2px; flex:1;}
+  .pastcard .pc-read{font-family:var(--head); font-size:.76rem; color:var(--faint); padding:0 14px 12px;}
+  .pastlinks{display:flex; background:var(--barink);}
+  .pastlinks a{flex:1; font-family:var(--head); font-weight:700; font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; text-align:center; padding:11px 4px; color:#D9BE9A; text-decoration:none; background:transparent; border-right:1px solid rgba(246,235,221,.14); transition:all .12s ease;}
+  .pastlinks a:last-child{border-right:none;}
+  .pastlinks a:hover{background:rgba(246,235,221,.08); color:#fff;}
+  .pastempty{font-family:var(--head); font-size:.86rem; color:var(--faint); border:1px dashed var(--mist); background:var(--paper); padding:14px 16px; max-width:640px;}
+  .foot{font-family:var(--head); font-size:.78rem; color:var(--faint); font-style:italic; margin:0 28px; border-top:1px solid var(--mist); padding:14px 0 26px; line-height:1.6;}
+  @media (max-width:820px){
+    .wrap{grid-template-columns:1fr;}
+    .comps{border-right:none; border-bottom:1px solid var(--mist);}
+    .row{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+<template id="__bundler_thumbnail" data-bg-color="#2C1806">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#2C1806"/>
+    <rect x="0" y="620" width="1200" height="18" fill="#E8650E"/>
+    <text x="600" y="450" font-family="Helvetica,Arial,sans-serif" font-size="260" font-weight="900" fill="#F6EBDD" text-anchor="middle">575</text>
+  </svg>
+</template>
+</head>
+<body>
+<div class="head">
+  <div class="headtext">
+  <h1>Law 575 Internet Law</h1>
+  <p style="font-size:.92rem; color:#F6EBDD; font-weight:700;">Professor Haque, Spring 2027 Wake Forest Law</p>
+  <p>Class meetings: Mondays and Wednesdays, 1:15-2:40 pm &middot; Room 1310</p>
+  <p>Three credits.  Plan on about two hours of work outside class for every hour in class, roughly six hours a week.</p>
+  <p>Professor office hours: Tuesdays and Fridays, 9:00-10:00 am, <a target="_blank" href="https://calendar.app.google/Q8QhDmP6G8fz3Ps36">by appointment ↗</a> &middot; Worrell 3313</p>
+  <p>Click a component to light its thread through the semester--or click an outcome to see everything that builds it.  <a id="canvasLink" href="#" target="_blank" style="color:var(--mist); font-weight:bold; text-decoration:none;">Canvas ↗</a> &middot; <a id="recLink2" href="#" target="_blank" style="color:var(--mist); font-weight:bold; text-decoration:none;">Recordings ↗</a> &middot; <a id="unitsLink" href="#" target="_blank" style="color:var(--mist); font-weight:bold; text-decoration:none;">Unit Circles &amp; calendars ↗</a></p>
+  </div>
+  <div class="bitmoji">
+    <img id="profBitmoji" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20118%20118%22%3E%3Crect%20width%3D%22118%22%20height%3D%22118%22%20fill%3D%22%23F9F0E1%22%2F%3E%3Ccircle%20cx%3D%2259%22%20cy%3D%2244%22%20r%3D%2220%22%20fill%3D%22%23EBD9BE%22%2F%3E%3Cpath%20d%3D%22M20%20108c6-24%2022-34%2039-34s33%2010%2039%2034z%22%20fill%3D%22%23EBD9BE%22%2F%3E%3Ctext%20x%3D%2259%22%20y%3D%22112%22%20font-family%3D%22monospace%22%20font-size%3D%229%22%20fill%3D%22%238A7359%22%20text-anchor%3D%22middle%22%3Eportrait%20tbd%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Professor Haque, in bitmoji form">
+    <span></span>
+  </div>
+</div>
+<div class="schedview" id="schedview" role="dialog" aria-label="Semester reading schedule">
+  <button class="schedclose" onclick="closeSched()">Close ✕</button>
+  <h2>Semester Reading Schedule · LAW 575 · Spring 2027</h2>
+  <div class="sub">Every session with its assigned reading.  The syllabus is the controlling document; where the two differ, the syllabus governs.</div>
+  <div id="schedbody"></div>
+</div>
+<div class="announce" id="announceA" style="display:none;"></div>
+<div class="nowband">
+  <div class="nextcard">
+    <div class="nc-kicker">Next Class</div>
+    <div class="nowline" id="nowClass">Loading the calendar…</div>
+    <div class="nowactions">
+      <a id="annotateLink" href="#" target="_blank">Annotate in Hypothesis ↗</a>
+      <a id="recLink" href="#past">Past class recordings &amp; materials ↓</a>
+      <a class="schedbtn" href="#schedule" onclick="openSched(); return false;">Semester reading schedule ↗</a>
+    </div>
+  </div>
+  <div class="fourwrap">
+    <div class="fourlabel">In the next four weeks</div>
+    <ul class="fourweeks" id="fourweeks"></ul>
+    <div class="weekwrap">
+      <div class="weeklabel" id="weeklabel">This week's readings</div>
+      <ul class="thisweek" id="thisweek"></ul>
+    </div>
+    <div style="margin-top:8px;"><a id="unitsLink2" href="#" target="_blank" style="font-family:var(--head); font-size:.82rem; color:var(--deep); font-weight:700;">Circle sign-up, dates, and calendar downloads ↗</a></div>
+  </div>
+</div>
+<div class="wrap">
+  <aside class="comps">
+    <h2>The Components</h2>
+    <div id="compList"></div>
+    <button class="clear" onclick="clearSel()">Show everything</button>
+    <div class="caption" id="caption"></div>
+  </aside>
+  <div>
+    <div class="outband">
+      <h2>What this course builds towards</h2>
+      <div id="outList"></div>
+    </div>
+    <main class="run" id="run" aria-live="polite"></main>
+  </div>
+</div>
+<section class="essentials">
+  <div class="ess">
+    <h2>What passing requires, in summary</h2>
+    <ol class="passlist">
+      <li><b>Attendance.</b>  At least 22 of the 26 sessions.  The first two absences are automatically excused;  the third and fourth are made up by watching the recording and posting a short synthesis within two weeks (or, where there is no recording or no reading, a short account agreed with the professor);  an absence not made up in time, or a fifth absence of any kind, means the requirement is not met.  Arrival after 1:20 pm is tardy;  device, early-departure, and post-notice tardy absences are ordinary absences.</li>
+      <li><b>Participation.</b>  The syllabus quiz at 100 percent, the Tech Digest Project complete, and 17 of the 21 annotation sets.  Honors:  all 21 sets and no more than one late item.</li>
+      <li><b>The SIAR block.</b>  The Session 6 prep set and practice problems, and the Session 8 quiz (one complete attempt at Part A, and Part B).</li>
+      <li><b>The portfolio.</b>  Your memo and your circle work (your draft and your letters):  one memo meeting the Memo Rubric; one cure cycle.  If your draft or your letters are missing at the close, 1:15 pm on the unit's memo date, the portfolio is not met.</li>
+      <li><b>Citation integrity.</b>  No unresolved citation-integrity violation.</li>
+    </ol>
+    <p class="essnote">Honors Pass requires the Honors Pass level on participation, the SIAR block, and the portfolio.  This list is a summary; <a id="sylPass" target="_blank" href="#">the syllabus</a> is the source, and where the two differ, the syllabus controls.</p>
+  </div>
+  <div class="ess">
+    <h2>Course documents</h2>
+    <div class="docstrip" id="docStrip"></div>
+    <p class="essnote"><a id="folderLink" target="_blank" href="https://drive.google.com/drive/folders/1DoGztXTviaAek0qE9o7XX-YuSLySm7B7">Open the shared folder ↗</a> -- documents live in Drive and are always the current version.</p>
+  </div>
+  <div class="ess">
+    <h2>Working with the professor</h2>
+    <p class="essbody">Course email is read and answered in batches, typically Tuesday and Friday mornings.  No reply after two batch days?  A resend is welcome and never counts against you.  For genuinely urgent matters, put URGENT in the subject line.  Office hours are Tuesdays and Fridays, 9:00-10:00 am, Worrell 3313;  <a target="_blank" href="https://calendar.app.google/Q8QhDmP6G8fz3Ps36">book a time on the office-hours calendar ↗</a>.</p>
+  </div>
+</section>
+
+<section class="past" id="past">
+  <h2>Past Classes</h2>
+  <div class="pastnote">Recordings, lecture materials, and the annotation thread for each session, posted after class -- newest first.</div>
+  <div class="pastgrid" id="pastGrid"></div>
+</section>
+<div class="foot">Course page v11.8 &middot; Oct 19, 2026 &middot; matches Syllabus v21.0.  SLO = formally reported Student Learning Outcome; Goals are the course's broader ambitions.  Portfolio dates move only with written notice on Canvas.  Where this page and the syllabus differ, the syllabus controls.</div>
+<script>
+const comps = [
+ {id:"port", name:"Portfolio (one memo)", pct:"the pass",
+  blurb:"Four portfolio problems, one memo.  You join a capped circle by the start of Session 6 and write on that unit's problem, to the published Memo Rubric in the Circle Guide.  One cure cycle, submitted directly to Professor Haque; a memo that needs a cure can pass but is not eligible for Honors Pass.  A memo is accepted up to one week late and cannot then earn Honors Pass:  if it meets every item it passes, and if it misses items its cure is due a week from the notice."},
+ {id:"circ", name:"Circles (workshop + letters)", pct:"3-4 students per circle",
+  blurb:"Joining a circle is how you choose your problem; sign-up closes Mon, Feb 1 (Session 6), and circles are capped.  Circles exchange complete drafts at the start of the session before the letters date, write one-page letters due at the start of the letters date, and meet within the week that follows (Unit 2 meets in class at Session 14).  Letters are written without AI:  using it in peer feedback violates the Honor Code.  A circle-mate's missing draft never counts against you.  Your draft and letters are part of the portfolio (Memo Rubric item 8):  a late draft or late letters count until the close, 1:15 pm on the unit's memo date, and are recorded as late under the syllabus's late-work rule, and two or more late items across the term cost participation Honors;  if either is missing at the close, the portfolio is not met."},
+ {id:"siar", name:"SIAR block (Sessions 6-8)", pct:"Pass / Honors Pass",
+  blurb:"How government makes internet law, in three sessions:  a prep set on the COPPA statute and rule (an individual Canvas annotation, due before Session 6), then an in-class module on statutes, agency rulemaking, enforcement, and judicial review, with required practice problems; children's privacy as the worked example, with the FTC's COPPA rule and its enforcement action against Epic Games; then the SIAR quiz on Canvas, in two parts.  Part A is required practice (one complete attempt, at any score), retakeable as often as you like; Part B is a written problem started in class.  Both parts close at the beginning of Session 9.  The whole block, prep set through Part B, is closed to generative AI (an Honor Code matter), including drafting assistants like Smart Compose, and the quiz is also closed to collaboration; spelling and grammar checking is fine.  Part B is open notes and may be continued outside class, answered in ordinary legal language:  translating the machine back into law is the test.  This block carries the Law School's Statutory Interpretation and Agency Regulation requirement."},
+ {id:"syl", name:"The Syllabus", pct:"controls",
+  blurb:"The master document -- the law of the course.  Everything on this page is a summary of it, and where the two differ, the syllabus controls.  Selecting it highlights the entire semester:  every component and deadline on this page implements a syllabus provision."},
+ {id:"annot", name:"Annotation sets (four notes)", pct:"17 of 21",
+  blurb:"Four notes per reading -- the rule, the gut check, the pile-on, the question -- due in Hypothesis by class time;  the first set, Wed Jan 13, covers Sessions 1 and 2, doubles as the Tech Digest's first component, and is required of everyone (late, it counts until 1:15 pm Wed Jan 20).  Every note is your own:  no generative AI in any set.  Twenty-two of the twenty-six sessions have Hypothesis reading, and the first set covers Sessions 1 and 2 together, so there are twenty-one sets (Session 6's COPPA packet is a Canvas annotation under the SIAR block, not a set); seventeen are required.  Session 8 (the quiz), Session 14 (workshop), and Session 26 (synthesis) have none.  The margins are deliberately social:  annotation threads shape what the professor brings to class, and they are where policy instincts warm up before the memo requires legal analysis."},
+ {id:"disc", name:"Discussion seminar (★ problems)", pct:"daily",
+  blurb:"This course is taught in discussion -- the professor's style is to think with you, not lecture at you.  ★ problems are designated for cold-call depth, and portfolio problems are discussed by the whole room, whether or not you write on them.  The choice is about what you write, never what you learn."},
+ {id:"tech", name:"Tech Digest Project", pct:"completion",
+  blurb:"Student group briefs at Session 5 that translate internet technology for a legal audience -- practice at explaining how a system works before arguing about what the law should do with it.  Checked for completion and good-faith effort, never scored.  Late components count until the project closes with the SIAR block at the start of Session 9, except the primer annotation (your first annotation set), which closes at 1:15 pm Wed Jan 20 (late adds post it by 1:15 pm Mon Jan 25);  late work is recorded under the syllabus's late-work rule;  a component not in by the close leaves the project incomplete."},
+ {id:"cite", name:"Generative AI & citation integrity", pct:"gate",
+  blurb:"The professional norm:  never sign what you haven't verified.  The memo ends with an AI-use acknowledgment and a signed certification that you read what you cited, and peer feedback and every annotation set are written without AI.  An honest misreading of something you read gets cured; fabricating authority, or citing what you never read, blocks a pass until resolved.  This component maps to all three formally reported outcomes:  verification supports every other requirement in the course."},
+ {id:"fb", name:"The cure cycle", pct:"one per memo",
+  blurb:"A memo that misses the rubric receives written notice of the items it missed and one cure cycle:  revise and resubmit within one week, directly to the professor.  If a delay arises on the professor's side, a revised date is posted on Canvas; a delay never shortens your cure window.  No outcome maps to this component:  it is the course keeping its own promises."}
+];
+const outs = [
+ {id:"slo1", kind:"SLO 1", label:"Apply statutes and agency sources", comps:["siar","port","disc","annot","cite"],
+  full:"Formally reported Student Learning Outcome 1:  “Apply statutes, as well as relevant sources promulgated by administrative agencies, to legal problems”--assessed by the SIAR quiz in Session 8, built in the Session 6 module and, in Session 7, the FTC's children's-privacy rule and its enforcement action against Epic Games, and rehearsed all semester:  the ★ problems turn on statutes from state hunting laws to § 230, COPPA, the CPRA, and the GDPR, alongside agency materials."},
+ {id:"slo2", kind:"SLO 2", label:"Apply doctrine to novel fact patterns", comps:["port","disc","annot","cite"],
+  full:"Formally reported Student Learning Outcome 2:  “Analyze internet law problems by applying relevant doctrine to novel fact patterns”--assessed by hypothetical brief, the portfolio memo, rehearsed daily in ★ discussion, with the citation certification enforcing the verification discipline the outcome demands."},
+ {id:"slo3", kind:"SLO 3", label:"Communicate legal analysis of technology issues", comps:["port","circ","cite"],
+  full:"Formally reported Student Learning Outcome 3:  “Communicate legal analysis of technology issues”--assessed by hypothetical brief, the portfolio memo, sharpened by every circle letter you write and receive, and certified every time you sign for what you cited."},
+ {id:"g1", kind:"Goal", label:"Read the technical architecture", comps:["tech","disc"],
+  full:"Learning Goal:  analyze the technical architecture of computing systems and internet infrastructure to identify legally significant issues.  Built in Unit 1's technical primers, sustained by every Tech Digest brief."},
+ {id:"g2", kind:"Goal", label:"Synthesize law into client strategy", comps:["port","disc"],
+  full:"Learning Goal:  synthesize statutory frameworks, case law, and regulatory guidance into comprehensive strategies for clients.  The memo is a client-facing recommendation; every ★ discussion is a rehearsal for one."},
+ {id:"g3", kind:"Goal", label:"Translate tech-law for any audience", comps:["tech","circ"],
+  full:"Learning Goal:  communicate internet law concepts clearly and engagingly to diverse audiences--employers, clients, colleagues.  The Tech Digest is the public version; the circle letter is the professional one."},
+ {id:"g4", kind:"Goal", label:"Give & receive professional critique", comps:["circ","annot"],
+  full:"Learning Goal:  workshop a colleague's legal analysis constructively and revise your own work in response--the daily rhythm of law practice.  Built in the circles, and rehearsed daily in the margins through the pile-on note."}
+];
+const rows = [
+ {rd:1, when:"Wk 1 · Jan 11", what:"Foundations:  how computers & the internet work", chips:[["disc","The syllabus, including Working with me"],["disc","Syllabus quiz by Sun Jan 17 (part of participation; retake until every answer is right)"],["annot","First set Wed Jan 13, covering Sessions 1-2"],["tech","Digest primer Wed Jan 13;  groups by Sun Jan 17"],["cite","Generative AI policy read together"]]},
+ {rd:1, when:"Wk 2 · Jan 18", what:"Code as law · generativity  (no class Mon Jan 18)", chips:[]},
+ {rd:1, when:"Wk 3 · Jan 25", what:"Is the internet a place?  · international enforcement", chips:[["disc","★ Dead Aim · ★ SeaHaven"],["tech","Digest briefs in class Wed Jan 27"]]},
+ {rd:1, when:"Wk 4 · Feb 1", what:"SIAR block:  how government makes internet law", chips:[["circ","Circle sign-up closes Mon Feb 1"],["siar","Module in class Mon Feb 1;  practice problems by Mon Feb 8, 1:15 pm"],["siar","Children’s privacy Wed Feb 3"],["tech","Digest wrap:  reflections Mon Feb 1"]]},
+ {rd:1, when:"Wk 5 · Feb 8", what:"SIAR quiz · content moderation", chips:[["siar","SIAR quiz in class Mon Feb 8"],["disc","★ CurrenC discussed Wed Feb 10"]]},
+ {rd:1, when:"Wk 6 · Feb 15", what:"Intermediary liability · § 230 foundations", chips:[["annot","Margins stay busy -- § 230 threads"]]},
+ {rd:1, when:"Wk 7 · Feb 22", what:"§ 230 scope · modern controversies", chips:[["circ","U2 drafts due Wed Feb 24"],["disc","Flipped videos before class"]]},
+ {rd:1, when:"Wk 8 · Mar 1", what:"Workshop · consumer privacy", chips:[["circ","U2 letters due Mon Mar 1; Unit 2 circles meet"]]},
+ {when:"Mar 8-12", what:"SPRING BREAK", chips:[["fb","No class; nothing due"]]},
+ {rd:1, when:"Wk 9 · Mar 15", what:"FTC & California · EU privacy", chips:[["disc","★ Cookie Monster discussed Mon Mar 15"],["circ","U3 drafts due Wed Mar 17"],["port","U2 MEMO DUE Wed Mar 17"],["cite","Signed certification with every memo"]]},
+ {rd:1, when:"Wk 10 · Mar 22", what:"Federalism · platform marketplaces", chips:[["circ","U3 letters due Mon Mar 22"],["circ","U4 drafts due Wed Mar 24"],["disc","★ 5thWheel discussed Wed Mar 24"]]},
+ {rd:1, when:"Wk 11 · Mar 29", what:"Antitrust foundations · modern antitrust", chips:[["circ","U4 letters due Mon Mar 29"],["disc","★ Google Maps Wed Mar 31"]]},
+ {rd:1, when:"Wk 12 · Apr 5", what:"Network neutrality · defective software", chips:[["port","U3 MEMO DUE Mon Apr 5"],["circ","U5 drafts due Wed Apr 7"],["disc","★ AI Confidential Wed Apr 7"]]},
+ {rd:1, when:"Wk 13 · Apr 12", what:"Virtual property · blockchain", chips:[["port","U4 MEMO DUE Mon Apr 12"],["circ","U5 letters due Mon Apr 12"]]},
+ {rd:1, when:"Wk 14 · Apr 19", what:"Synthesis Day · classes end Mon Apr 19", chips:[["port","U5 MEMO DUE Mon Apr 19"]]},
+ {when:"Exams → May", what:"Grading window", chips:[["fb","Cures within one week of the notice"],["cite","An unresolved citation violation blocks a pass"]]}
+];
+/* The Tech Digest leads the rail through its final deadline (reflections, Feb 1);
+   after that, Unit Circle Work takes the higher position for the rest of the term.
+   The pivot is this one date. */
+const TD_LEADS_THROUGH = "2027-02-01";
+const GROUPS = (new Date() <= new Date(TD_LEADS_THROUGH + "T23:59:59"))
+  ? [
+      ["The Master Document", ["syl"]],
+      ["Before Each Class", ["annot","disc"]],
+      ["The Tech Digest", ["tech"]],
+      ["The SIAR Block", ["siar"]],
+      ["Unit Circle Work", ["port","circ","cite","fb"]]
+    ]
+  : [
+      ["The Master Document", ["syl"]],
+      ["Before Each Class", ["annot","disc"]],
+      ["Unit Circle Work", ["port","circ","cite","fb"]],
+      ["The SIAR Block", ["siar"]],
+      ["The Tech Digest", ["tech"]]
+    ];
+
+/* ANNOUNCEMENTS -- newest first.  Add an entry, redeploy a new version.  Empty array = no banner.
+   Example:  { date:"2027-03-22", title:"Unit 2 feedback", text:"The Unit 2 batch returns Fri, Mar 26 -- revised from Mar 19." }  */
+const ANNOUNCEMENTS = [
+];
+
+const CANVAS_BASE = "https://wakeforest.instructure.com/courses/86109";   // the live course;  one-line swap if the number changes
+const RECORDINGS = CANVAS_BASE + "/modules";   // TODO: capture-tool tab once IT confirms; lecture slides live in the modules too
+const DOC = {   /* Student View addresses (kit/links.json);  the files keep these IDs across versions */
+  syl:  "https://drive.google.com/file/d/1JHT-d-wgxFF9azHncjNWfosLbPeh1U_g/preview",
+  circ: "https://drive.google.com/file/d/1j3mjtqTFCF27dmXY4w1JEFn9H8ewFTql/preview",
+  cs:   "https://drive.google.com/file/d/1Dzi76vRwpYzEZmmMB9bQ0keZGsKzVTDY/preview",
+  td:   "https://drive.google.com/file/d/1rHNv2RDHqCq2CKQJI0FzAkCs-64N02DO/preview",
+  ag:   "https://drive.google.com/file/d/1Brrz_9v8xksjArCJWJezWUrSqwZIjU65/preview",
+  sm:   "https://drive.google.com/file/d/1oG9dec533dYCR3qFo6mwX5R0cGdaBP__/preview",
+  coppa:"https://drive.google.com/file/d/1rOvec_7s38K1LrIRIm35jApb8KUHHxfZ/preview"
+};
+const DOC_LINKS = {
+  syl:  [["Syllabus", DOC.syl]],
+  annot:[["Annotation Guide", DOC.ag]],
+  disc: [["Circle Guide (prompts in Appendix A)", DOC.circ]],
+  port: [["Circle Guide", DOC.circ], ["Memo Coversheet & Certification", DOC.cs]],
+  circ: [["Circle Guide", DOC.circ]],
+  siar: [["SIAR Module", DOC.sm], ["COPPA packet (Session 6; annotate the Canvas copy)", DOC.coppa]],
+  annotg: [["Annotation Guide", DOC.ag]],
+  cite: [["Memo Coversheet & Certification", DOC.cs]],
+  tech: [["Tech Digest Project", DOC.td]],
+  fb:   []
+};
+const SESSIONS = [
+  ["2027-01-11","Course Introduction;  Technical Primer:  Computers","Syllabus;  Ch. 1, pp. 13-24"],
+  ["2027-01-13","Technical Primer:  Internet and Cryptography","Ch. 1, pp. 25-43"],
+  ["2027-01-20","Theory:  Code as Law;  Generativity","Ch. 1, pp. 44-53"],
+  ["2027-01-25","Cyberspace:  Is the Internet a Separate Place?  ★ Dead Aim","Ch. 2.A, pp. 55-71"],
+  ["2027-01-27","Jurisdictional Conflicts:  International Enforcement  ★ SeaHaven","Ch. 2.B, pp. 72-85, 87-88"],
+  ["2027-02-01","SIAR A:  How Government Works as a Machine","COPPA packet on Canvas:  SIAR prep set due before class (individual Canvas annotation) · in-class module and practice problems, worked without AI"],
+  ["2027-02-03","SIAR B:  Children’s Privacy","Ch. 5.G, pp. 434-460 (U.S. v. Epic Games;  California AADC), with the COPPA packet in hand"],
+  ["2027-02-08","SIAR C:  The SIAR Quiz","No new reading · in-class quiz;  both parts close at the start of Session 9"],
+  ["2027-02-10","Content Moderation:  Platform Policies  ★ CurrenC","Ch. 4.A, pp. 187-214"],
+  ["2027-02-15","Intermediary Liability","Ch. 4.B, pp. 215-228"],
+  ["2027-02-17","Section 230:  Foundations","Ch. 4.C, pp. 229-246"],
+  ["2027-02-22","Section 230:  Scope and Limits","Ch. 4.C, pp. 247-252",["FOSTA:  What It Changed, and What It Didn’t","The TAKE IT DOWN Act’s Notice-and-Removal Machinery"]],
+  ["2027-02-24","Section 230:  Modern Controversies","Ch. 4.C, pp. 253-272",["The DSA’s Liability Architecture"]],
+  ["2027-03-01","Workshop:  Circles and Open Questions","No new reading · Unit 2 circles meet;  letters due at the start of class"],
+  ["2027-03-03","Consumer Privacy:  Tracking, Standing, and Harm","Ch. 5.E, pp. 388-405"],
+  ["2027-03-15","Consumer Privacy:  FTC and California Law  ★ Cookie Monster","Ch. 5.E, pp. 406-420"],
+  ["2027-03-17","Privacy Law in the European Union","Ch. 5.F, pp. 420-433",["GDPR:  The Architecture","GDPR:  Rights and Duties","GDPR Enforcement and the One-Stop Shop"]],
+  ["2027-03-22","Federalism and the Dormant Commerce Clause","Federalism module (Canvas) · Ch. 2.C, pp. 112-122"],
+  ["2027-03-24","Platform Regulation:  Marketplaces  ★ 5thWheel","Ch. 9.A, pp. 675-692"],
+  ["2027-03-29","Platform Regulation:  Antitrust Foundations","Ch. 9.B, pp. 693-708"],
+  ["2027-03-31","Platform Regulation:  Modern Antitrust  ★ Google Maps","Ch. 9.B, pp. 709-716",["The DMA:  Gatekeepers","The DMA:  Obligations and Remedies"]],
+  ["2027-04-05","Platform Regulation:  Network Neutrality","Ch. 9.C, pp. 717-733 (Verizon v. FCC;  Open Internet orders)"],
+  ["2027-04-07","Defective Software and Algorithmic Accountability  ★ AI Confidential","Ch. 10.A, pp. 735-750"],
+  ["2027-04-12","Virtual Property","Ch. 10.B, pp. 751-777"],
+  ["2027-04-14","Blockchains and Cryptocurrency","Ch. 10.C, pp. 778-792"],
+  ["2027-04-19","Synthesis Day","No new reading"]
+];
+const SESSION_PAGES = [
+  "session-1-mon-jan-11-course-introduction-technical-primer-computers",
+  "session-2-wed-jan-13-technical-primer-internet-and-cryptography",
+  "session-3-wed-jan-20-theory-code-as-law-generativity",
+  "session-4-mon-jan-25-cyberspace-is-the-internet-a-separate-place",
+  "session-5-wed-jan-27-jurisdictional-conflicts-international-enforcement",
+  "session-6-mon-feb-1-siar-a-how-government-works-as-a-machine",
+  "session-7-wed-feb-3-siar-b-children-s-privacy",
+  "session-8-mon-feb-8-siar-c-the-siar-quiz",
+  "session-9-wed-feb-10-content-moderation-platform-policies",
+  "session-10-mon-feb-15-intermediary-liability",
+  "session-11-wed-feb-17-section-230-foundations",
+  "session-12-mon-feb-22-section-230-scope-and-limits",
+  "session-13-wed-feb-24-section-230-modern-controversies",
+  "session-14-mon-mar-1-workshop-circles-and-open-questions",
+  "session-15-wed-mar-3-consumer-privacy-tracking-standing-and-harm",
+  "session-16-mon-mar-15-consumer-privacy-ftc-and-california-law",
+  "session-17-wed-mar-17-privacy-law-in-the-european-union",
+  "session-18-mon-mar-22-federalism-and-the-dormant-commerce-clause",
+  "session-19-wed-mar-24-platform-regulation-marketplaces",
+  "session-20-mon-mar-29-platform-regulation-antitrust-foundations",
+  "session-21-wed-mar-31-platform-regulation-modern-antitrust",
+  "session-22-mon-apr-5-platform-regulation-network-neutrality",
+  "session-23-wed-apr-7-defective-software-and-algorithmic-accountability",
+  "session-24-mon-apr-12-virtual-property",
+  "session-25-wed-apr-14-blockchains-and-cryptocurrency",
+  "session-26-mon-apr-19-synthesis-day"
+];  // Canvas page slugs from the course export (Oct 17, 2026);  slugs survive copies, numeric IDs do not
+const pageUrl = i => CANVAS_BASE + "/pages/" + SESSION_PAGES[i];
+const SIGNUP = "2027-02-01";
+const WIN = [
+  {u:2, problem:"SeaHaven",       disc:"2027-01-27", drafts:"2027-02-24", letters:"2027-03-01", due:"2027-03-17"},
+  {u:3, problem:"CurrenC",        disc:"2027-02-10", drafts:"2027-03-17", letters:"2027-03-22", due:"2027-04-05"},
+  {u:4, problem:"Cookie Monster", disc:"2027-03-15", drafts:"2027-03-24", letters:"2027-03-29", due:"2027-04-12"},
+  {u:5, problem:"5thWheel",       disc:"2027-03-24", drafts:"2027-04-07", letters:"2027-04-12", due:"2027-04-19"}
+];
+const TD_EVENTS = [
+  ["2027-01-17","Syllabus quiz due (part of participation)"],["2027-01-13","Tech Digest:  primer annotated"],["2027-01-17","Tech Digest:  join a group"],["2027-01-20","First annotation set closes (1:15 pm)"],["2027-01-25","First annotation set due for late adds (1:15 pm)"],
+  ["2027-01-27","Tech Digest:  curation doc + briefs"],["2027-02-01","Tech Digest:  reflections due"]
+];
+const REGISTRAR_EVENTS = [["2027-01-17","Add deadline (Law School calendar)"],["2027-01-24","Drop deadline (Law School calendar)"]];
+const SIAR_EVENTS = [["2027-02-01","SIAR prep set due (1:15 pm); module in class"],["2027-02-08","SIAR practice problems due (1:15 pm)"],["2027-02-08","SIAR quiz in class"],["2027-02-10","Syllabus quiz, Tech Digest, and SIAR block close (1:15 pm)"]];
+const nfmt = iso => new Date(iso + "T12:00:00").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+const ASOF = new URLSearchParams(location.search).get("asof");   /* v2.7 test harness:  ?asof=YYYY-MM-DD */
+const ntoday = () => ASOF ? new Date(ASOF + "T12:00:00") : new Date();
+
+function renderAnnouncements(){
+  if (!ANNOUNCEMENTS.length) return;
+  const box = document.getElementById("announceA");
+  box.style.display = "block";
+  box.innerHTML = ANNOUNCEMENTS.map(x =>
+    `<div class="ann"><span class="when">${nfmt(x.date)}</span><b>${x.title}.</b>  ${x.text}</div>`).join("");
+}
+
+function segLine(s){                                     /* v2.7:  named watch-lines; runtimes join when renders exist */
+  if (!s[3] || !s[3].length) return "";
+  const names = s[3].map(t => typeof t === "string" ? t : (t.title + (t.min ? ` (${t.min} min)` : "")));
+  return ` <span class="seg">▶ Watch before class:  ${names.join(" · ")}</span>`;
+}
+function weekSpan(d){                                   /* Monday..Sunday of d's week (v2.3) */
+  const x = new Date(d); x.setHours(12,0,0,0);
+  const dow = (x.getDay() + 6) % 7;                       /* Mon=0 */
+  const mon = new Date(x.getTime() - dow*86400000);
+  const sun = new Date(mon.getTime() + 6*86400000);
+  return [mon, sun];
+}
+function computeThisWeek(now){                             /* pure:  {label, items} (v2.3) */
+  const dt = s => new Date(s[0] + "T12:00:00");
+  let [mon, sun] = weekSpan(now);
+  let items = SESSIONS.filter(s => dt(s) >= mon && dt(s) <= sun);
+  const today0 = new Date(now); today0.setHours(0,0,0,0);
+  if (items.length && items.every(s => dt(s) < today0)) items = [];   /* week fully elapsed -> show the coming week */
+  let label = "This week’s readings";
+  if (!items.length){
+    const next = SESSIONS.find(s => dt(s) >= now);
+    if (!next) return { label: "Readings", items: [] };
+    [mon, sun] = weekSpan(dt(next));
+    items = SESSIONS.filter(s => dt(s) >= mon && dt(s) <= sun);
+    label = "Coming up · week of " + mon.toLocaleDateString("en-US",{month:"short",day:"numeric"});
+  }
+  return { label, items };
+}
+function renderThisWeek(){
+  const { label, items } = computeThisWeek(ntoday());
+  document.getElementById("weeklabel").textContent = label;
+  document.getElementById("thisweek").innerHTML = items.length
+    ? items.map(s => `<li><b>${nfmt(s[0])}</b> · ${s[1]} — <span class="rdg">${s[2]}</span>${segLine(s)}</li>`).join("")
+    : `<li>The semester is complete.</li>`;
+}
+function renderNow(){
+  const t = ntoday();
+  const next = SESSIONS.find(s => new Date(s[0]+"T13:15:00") >= t);   // a class day shows that class until it starts
+  const watch = next && next[3] && next[3].length
+    ? ` · <b>watch:</b> ${next[3].map(t => typeof t === "string" ? t : t.title).join(" · ")}`
+    : ``;
+  const aL = document.getElementById("annotateLink");
+  if (next) { aL.href = pageUrl(SESSIONS.indexOf(next)); aL.textContent = "Session page and annotation set in Canvas ↗"; }
+  else { aL.href = CANVAS_BASE + "/modules"; }
+  document.getElementById("nowClass").innerHTML = next
+    ? `Next class ${nfmt(next[0])}:  <b>${next[1]}</b> · ${/^No new reading/i.test(next[2]) ? next[2] : `read ${next[2]}`}${watch}`
+    : "The semester is complete -- recordings remain in Canvas.";
+  const ev = [...TD_EVENTS, ...REGISTRAR_EVENTS, ...SIAR_EVENTS, [SIGNUP, "Circle sign-up closes (all units)"]];
+  for (const w of WIN){
+    ev.push([w.disc,`Unit ${w.u} problem discussed in class`],
+            [w.drafts,`Unit ${w.u} drafts due`],[w.letters,`Unit ${w.u} letters due`],
+            [w.due,`Unit ${w.u} memo due`]);
+  }
+  ev.sort((a,b)=>a[0].localeCompare(b[0]));
+  const horizon = new Date(t.getTime() + 28*86400000);
+  const list = ev.filter(e => { const d=new Date(e[0]+"T23:59:00"); return d>=t && d<=horizon; });
+  document.getElementById("fourweeks").innerHTML = list.length
+    ? list.map(e=>`<li><span>${e[1]}</span><b>${nfmt(e[0])}</b></li>`).join("")
+    : `<li><span>No deadlines fall in the next four weeks.</span></li>`;
+  renderThisWeek();
+}
+
+function renderSched(){                                   /* v2.4:  same arrays, full view */
+  const wks = rows.map((r,i)=>({label:r.when, what:r.what, ss:sessionsForRow(i)})).filter(w=>w.ss.length);
+  let html = wks.map(w =>
+    `<div class="schedwk">${w.label} — ${w.what}</div>` +
+    w.ss.map(s => `<div class="schedrow"><span class="d">${nfmt(s[0])}</span><span class="t">${s[1]}${segLine(s)}</span><span class="r">${s[2]}</span></div>`).join("")
+  ).join("");
+  html += `<div class="schedwin"><div class="schedwk">The portfolio &middot; circle sign-up closes ${nfmt(SIGNUP)} for every unit</div><table><tr><th>Unit</th><th>Problem</th><th>Discussed</th><th>Drafts due</th><th>Letters due</th><th>Memo due</th></tr>` +
+    WIN.map(w=>`<tr><td>Unit ${w.u}</td><td>${w.problem}</td><td>${nfmt(w.disc)}</td><td>${nfmt(w.drafts)}</td><td>${nfmt(w.letters)}</td><td>${nfmt(w.due)}</td></tr>`).join("") + `</table></div>`;
+  document.getElementById("schedbody").innerHTML = html;
+}
+function openSched(){ renderSched(); document.getElementById("schedview").classList.add("open"); history.replaceState(null,"","#schedule"); }
+function closeSched(){ document.getElementById("schedview").classList.remove("open"); history.replaceState(null,"",location.pathname + location.search); }
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeSched(); });
+if (location.hash === "#schedule") setTimeout(openSched, 0);
+const expandedWeeks = new Set();                          /* v2.3 */
+function rowStart(r){
+  const m = /·[ ]*([A-Z][a-z]{2})[ ]+([0-9]{1,2})/.exec(r.when);
+  if (!m) return null;
+  const months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4};
+  return new Date(2027, months[m[1]], +m[2], 12);
+}
+function sessionsForRow(i){
+  const start = rowStart(rows[i]);
+  if (!start) return [];
+  let end = null;
+  for (let j = i+1; j < rows.length; j++){ const s = rowStart(rows[j]); if (s){ end = s; break; } }
+  const dt = s => new Date(s[0] + "T12:00:00");
+  return SESSIONS.filter(s => dt(s) >= start && (end ? dt(s) < end : true));
+}
+function toggleWk(i){
+  if (expandedWeeks.has(i)) expandedWeeks.delete(i); else expandedWeeks.add(i);
+  render();
+}
+let sel=null; // {type:'comp'|'out', id}
+function activeComps(){
+  if(!sel) return null;
+  if(sel.type==='comp') return sel.id==='syl' ? comps.map(c=>c.id) : [sel.id];
+  return outs.find(o=>o.id===sel.id).comps;
+}
+function render(){
+  const ac = activeComps();
+  document.getElementById("compList").innerHTML = GROUPS.map(([label, ids]) =>
+    `<div class="grp">${label}</div>` + ids.map(id => {
+      const c = comps.find(x => x.id === id);
+      let cls = c.id;
+      if(sel){
+        if(sel.type==='comp') cls += sel.id===c.id ? " on" : (sel.id==='syl' ? " serves" : " faded");
+        else cls += ac.includes(c.id) ? " serves" : " faded";
+      }
+      return `<button class="comp ${cls}" onclick="selComp('${c.id}')">${c.name}<span class="pct">${c.pct}</span></button>`;
+    }).join("")
+  ).join("");
+  document.getElementById("outList").innerHTML = outs.map(o=>{
+    let cls = o.id.startsWith("slo") ? "slo" : "";
+    if(sel){
+      if(sel.type==='out') cls += sel.id===o.id ? " on" : " faded";
+      else cls += (sel.id==='syl' || o.comps.includes(sel.id)) ? " lit" : " faded";
+    }
+    return `<button class="pill ${cls}" onclick="selOut('${o.id}')"><span class="k">${o.kind}</span>${o.label}</button>`;
+  }).join("");
+  document.getElementById("run").innerHTML = rows.map((r,i)=>{
+    const has = ac && (r.chips.some(ch=>ac.includes(ch[0])) || (ac.includes("annot") && r.rd));
+    const cls = !sel ? "" : has ? "lit" : "dim";
+    const wk = sessionsForRow(i);
+    const expandable = wk.length > 0;
+    const open = expandable && expandedWeeks.has(i);
+    const caret = expandable ? `<span class="caret">${open ? "▾ readings" : "▸ readings"}</span>` : "";
+    const detail = open ? `<div class="wkdetail">` + wk.map(s =>
+      `<div><b>${nfmt(s[0])}</b> · ${s[1]} — <span class="rdg">${s[2]}</span>${segLine(s)}</div>`).join("") + `</div>` : "";
+    return `<div class="row ${cls}${expandable ? " expandable" : ""}"${expandable ? ` onclick="toggleWk(${i})"` : ""}><div class="when">${r.when}</div><div class="what"><b>${r.what}</b>${caret}`+
+      r.chips.map(ch=>`<span class="chip ${ch[0]} ${ac&&ac.includes(ch[0])?"hit":""}">${ch[1]}</span>`).join("")+detail+`</div></div>`;
+  }).join("");
+  const cap = document.getElementById("caption");
+  const linksFor = id => {
+    const L = DOC_LINKS[id] || [];
+    return L.length ? `<span class="caplinks">Open:  ` + L.map(([n,u])=>`<a href="${u}" target="_blank">${n} ↗</a>`).join(" · ") + `</span>` : "";
+  };
+  if(!sel){ cap.innerHTML = "Click a component to trace its thread, or click an outcome above the timeline to see everything that builds it.  Start with The Syllabus to light the whole semester."; }
+  else if(sel.type==='comp'){
+    const c = comps.find(x=>x.id===sel.id);
+    const isSyl = sel.id==='syl';
+    const n = isSyl ? rows.length : rows.filter(r=>r.chips.some(ch=>ch[0]===sel.id) || (sel.id==="annot" && r.rd)).length;
+    const served = isSyl ? ["everything on this page"] : outs.filter(o=>o.comps.includes(sel.id)).map(o=>o.kind+":  "+o.label);
+    cap.innerHTML = c.blurb + "<br><br>Touches " + n + " of " + rows.length + " rows" +
+      (served.length ? ".  Builds:  " + served.join(" · ") : ".") + linksFor(sel.id);
+  } else {
+    const o = outs.find(x=>x.id===sel.id);
+    const n = rows.filter(r=>r.chips.some(ch=>o.comps.includes(ch[0]))).length;
+    cap.innerHTML = o.full + "<br><br>Lit:  " + n + " of " + rows.length + " rows.";
+  }
+}
+function selComp(id){ sel = (sel && sel.type==='comp' && sel.id===id) ? null : {type:'comp', id}; render(); }
+function selOut(id){ sel = (sel && sel.type==='out' && sel.id===id) ? null : {type:'out', id}; render(); }
+function clearSel(){ sel=null; render(); }
+function renderPast(){
+  const t = ntoday();
+  const past = SESSIONS.filter(s => new Date(s[0]+"T14:40:00") < t).reverse();   // a card appears once the class has ended
+  const grid = document.getElementById("pastGrid");
+  if (!past.length){
+    grid.innerHTML = `<div class="pastempty" style="grid-column:1/-1;">No classes yet -- the first card appears here after Class 1 on ${nfmt(SESSIONS[0][0])}.</div>`;
+    return;
+  }
+  grid.innerHTML = past.map(s => {
+    const idx = SESSIONS.indexOf(s) + 1;
+    return `<div class="pastcard">
+      <div class="pc-when">Class ${idx} of ${SESSIONS.length} · ${nfmt(s[0])}</div>
+      <div class="pc-topic">${s[1]}</div>
+      <div class="pc-read">${s[2]}</div>
+      <div class="pastlinks">
+        <a target="_blank" href="${RECORDINGS}">Recording ↗</a>
+        <a target="_blank" href="${pageUrl(idx-1)}">Session page in Canvas ↗</a>
+      </div>
+    </div>`;
+  }).join("");
+}
+render();
+renderNow();
+renderAnnouncements();
+renderPast();
+const metaVal = n => { const m = document.querySelector('meta[name="' + n + '"]'); return m ? m.getAttribute("content") : ""; };
+const SERVICE_URL = (raw => raw.indexOf("serviceUrl") === -1 ? raw : "")(metaVal("service-url"));
+const DRIVE_LIVE = (raw => {
+  if (raw.indexOf("driveDocsB64") !== -1) return [];
+  try { return JSON.parse(atob(raw)); } catch (e) { return []; }
+})(metaVal("drive-docs"));
+const DOC_META = [
+  ["Syllabus","Syllabus"], ["Circle_Guide","Circle Guide"],
+  ["Coversheet","Memo Coversheet & Certification"], ["Tech_Digest","Tech Digest Project"],
+  ["Annotation_Guide","Annotation Guide"], ["SIAR_Module","SIAR Module"], ["COPPA","COPPA packet (Session 6; annotate the Canvas copy)"]
+];
+const isDoc = f => { const n = f.name.toLowerCase(); return n.endsWith(".docx") || n.endsWith(".pdf"); };
+const pv = u => { const b = u.split("?")[0]; return (b.endsWith("/view") || b.endsWith("/edit")) ? b.slice(0, -5) + "/preview" : b; };
+(function renderDocStrip(){
+  const strip = document.getElementById("docStrip");
+  if (DRIVE_LIVE.length){
+    const used = new Set();
+    let tiles = DOC_META.map(([key, title]) => {
+      const f = DRIVE_LIVE.find(x => isDoc(x) && x.name.includes(key));
+      if (!f) return "";
+      used.add(f.name);
+      return `<a target="_blank" href="${pv(f.url)}">${title} ↗</a>`;
+    }).join("");
+    tiles += DRIVE_LIVE.filter(f => isDoc(f) && !used.has(f.name)).map(f =>
+      `<a target="_blank" href="${pv(f.url)}">${f.name.replace(/^LAW575_/,"").replace(/_Spring2027.*$/,"").replace(/_/g," ")} ↗</a>`).join("");
+    strip.innerHTML = tiles;
+  } else {
+    strip.innerHTML = Object.entries({
+      "Syllabus": DOC.syl, "Circle Guide": DOC.circ,
+      "Memo Coversheet & Certification": DOC.cs, "Tech Digest Project": DOC.td,
+      "Annotation Guide": DOC.ag, "SIAR Module": DOC.sm, "COPPA packet (Session 6; annotate the Canvas copy)": DOC.coppa
+    }).map(([n,u]) => `<a target="_blank" href="${u}">${n} ↗</a>`).join("");
+  }
+  const syl = DRIVE_LIVE.find(x => x.name.includes("Syllabus"));
+  document.getElementById("sylPass").href = syl ? pv(syl.url) : DOC.syl;
+})();
+const uL = document.getElementById("unitsLink"), uL2 = document.getElementById("unitsLink2");
+uL.href = "units.html"; uL2.href = "units.html";
+  DOC_LINKS.port.unshift(["Unit windows & calendar downloads", "units.html"]);
+document.getElementById("canvasLink").href = CANVAS_BASE;
+/* Inside the Canvas frame the Canvas link is redundant:  hide it (and its separator). */
+try {
+  if (window.self !== window.top) {
+    const cl = document.getElementById("canvasLink");
+    if (cl) {
+      const sep = cl.nextSibling;
+      if (sep && sep.nodeType === 3 && sep.textContent.indexOf("·") > -1) sep.textContent = " ";
+      cl.style.display = "none";
+    }
+  }
+} catch (err) { /* cross-origin check failed:  leave the link visible */ }
+document.getElementById("recLink2").href = RECORDINGS;
+</script>
+</body>
+</html>

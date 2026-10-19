@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<!--
+  VERSION HISTORY
+  v1.0 · Jul 2026 · Unit windows page: five cards, phase-aware actions, calendar downloads
+  v2.0 · Jul 2026 · Docket Board design adopted; accessibility harmonized
+  v2.1 · Aug 2026 · Renamed Unit Circles
+  v3.8 · Oct 19, 2026 · Add-to-Google-Calendar button for the subscribed course calendar (shown once its link is set), with the Tangerine tip;  the .ics download is the fallback
+  v3.7 · Oct 19, 2026 · Calendar files:  every entry and calendar titled LAW 575 Internet Law;  orange colour carried in the file (COLOR, X-APPLE-CALENDAR-COLOR) with a note for apps that ignore it;  file names say InternetLaw
+  v3.6 · Oct 19, 2026 · Calendar files carry every date in force:  each annotation set's due date and its close (first set Jan 20;  spring-break closes Mar 15;  closes after classes end);  first class, no-class day, spring break;  circle meetings;  circle-work closes;  the last day for each late memo
+  v3.5 · Oct 19, 2026 · Cards show each unit's page range in place of a chapter label;  circle size in students;  Feb 8 practice-problem event (Syllabus v21.0)
+  v3.4 · Oct 19, 2026 · Calendar:  first annotation set closes Jan 20 and is due Jan 25 for late adds;  Feb 10 event trimmed (Syllabus v20.0)
+  v3.3 · Oct 19, 2026 · Circle work in the portfolio, closing 1:15 pm on the memo date;  a "late week" badge for the week a late memo is accepted;  Unit 5 card keeps its memo note under Memo due;  Feb 10 event names all four closes (Syllabus v19.0, Circle Guide v13.0)
+  v3.2 · Oct 19, 2026 · Calendar event: the syllabus quiz due Jan 17, locks nothing;  late drafts and letters count until the unit's memo date (Syllabus v18.0, Circle Guide v12.0)
+  v3.1 · Oct 18, 2026 · Calendar event: the syllabus quiz is part of participation
+  v3.0 · Oct 17, 2026 · Rebuilt from the Rules Register (Syllabus v16.1, Circle Guide v11.3):  one memo on one of four problems;  sign-up closes Session 6;  drafts, letters, circle meeting, and memo dates per unit;  late rules;  service URL via meta tag;  calendar files carry every course deadline
+-->
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit Circles · LAW 575 · Spring 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  /* DIRECTION C · "Docket Board" — dark masthead, signal-spined cards, dark action rail */
+  :root{
+    --signal:#E8650E; --deep:#93481B; --barink:#2C1806; --mist:#EBD9BE;
+    --pale:#F9F0E1; --slate:#F0DCC5; --ink:#37291B; --paper:#FCF9F4; --faint:#8A7359;
+    --head:'Archivo','Helvetica Neue',Helvetica,sans-serif;
+    --body:'Source Serif 4',Charter,Georgia,serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  ::selection{background:var(--mist);}
+  body{font-family:var(--body); color:var(--ink); background:var(--paper); line-height:1.6; -webkit-font-smoothing:antialiased;}
+  .head{background:var(--barink); border-bottom:5px solid var(--signal); padding:28px 28px 22px;}
+  .head h1{font-family:var(--head); color:#F6EBDD; font-weight:900; font-size:1.6rem; letter-spacing:-.02em;}
+  .head p{font-family:var(--head); color:#C7A985; font-size:.84rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; margin-top:8px;}
+  .head a{color:var(--mist); font-weight:700; text-decoration:none;}
+  .head a:hover{color:var(--signal);}
+  main{max-width:1080px; margin:0 auto; padding:32px 28px 56px;}
+  .lede{max-width:68ch; margin-bottom:30px; font-size:1.06rem; text-wrap:pretty;}
+  .windows{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;}
+  .card{border:1px solid var(--mist); border-top:6px solid var(--signal); background:#fff; display:flex; flex-direction:column; box-shadow:0 1px 3px rgba(44,24,6,.07);}
+  .card .top{background:transparent; color:var(--barink); font-family:var(--head); font-weight:800; font-size:1.02rem; letter-spacing:-.01em; padding:16px 16px 8px; display:flex; justify-content:space-between; align-items:flex-start; gap:10px; border-bottom:1px solid var(--pale);}
+  .card .top .badge{font-size:.64rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; padding:4px 10px; border-radius:0; background:var(--pale); color:var(--faint); flex:none; margin-top:2px;}
+  .card .top .badge.open{background:var(--signal); color:#fff;}
+  .card .top .badge.late-week{background:var(--slate); color:var(--ink);}
+  .card .top .badge.closed{background:var(--barink); color:var(--mist);}
+  .card .body{padding:12px 16px 16px; flex:1;}
+  .card .prob{font-family:var(--head); font-weight:800; color:var(--deep); font-size:1rem;}
+  .card .page{font-size:.8rem; color:var(--faint); font-family:var(--head); margin:2px 0 12px; line-height:1.5;}
+  .promptline{font-family:var(--head); font-size:.8rem; background:none; border-left:none; padding:0 0 12px; margin-bottom:12px; color:var(--barink); line-height:1.5; border-bottom:1px solid var(--pale);}
+  .promptline a{color:var(--deep); font-weight:700; text-decoration:underline; text-decoration-color:var(--signal); text-underline-offset:3px;}
+  .promptline a:hover{color:var(--signal);}
+  .card dl{display:grid; grid-template-columns:auto 1fr; gap:0 14px; font-size:.85rem;}
+  .card dt{font-family:var(--head); color:var(--faint); padding:5px 0 5px 14px; position:relative;}
+  .card dt::before{content:""; position:absolute; left:0; top:50%; width:7px; height:7px; transform:translateY(-50%); border-radius:50%; background:var(--mist);}
+  .card dt:nth-of-type(6)::before{background:var(--signal);}
+  .card dd{text-align:right; font-family:var(--head); font-weight:700; color:var(--barink); padding:5px 0; font-variant-numeric:tabular-nums;}
+  .card dt:nth-of-type(6), .card dd:nth-of-type(6){font-weight:800; font-size:.9rem;}
+  .acts{display:flex; border-top:none; background:var(--barink);}
+  .acts a{flex:1; font-family:var(--head); font-size:.72rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; text-align:center; padding:12px 4px; color:#D9BE9A; text-decoration:none; background:transparent; border-right:1px solid rgba(246,235,221,.14); transition:all .12s ease;}
+  .acts a:last-child{border-right:none; flex:0 0 44px;}
+  .acts a:hover{color:#fff; background:rgba(246,235,221,.08);}
+  .acts a.now{background:var(--signal); color:#fff;}
+  .allics{margin:22px 0 0; font-family:var(--head); font-size:.9rem;}
+  .allics a{color:var(--deep); font-weight:700;}
+  .allics a:hover{color:var(--signal);}
+  h2{font-family:var(--head); color:var(--barink); font-size:1.15rem; font-weight:800; margin:46px 0 16px; max-width:none; border-bottom:none; padding-bottom:0; position:relative; padding-left:16px;}
+  h2::before{content:""; position:absolute; left:0; top:4px; bottom:4px; width:5px; background:var(--signal);}
+  .rhythm{display:flex; gap:0; flex-wrap:wrap; font-family:var(--head); font-size:.86rem;}
+  .rhythm span{padding:10px 20px; border:none; color:var(--barink); background:var(--pale); margin-right:2px;}
+  .rhythm span:first-child{background:var(--barink); color:var(--pale); font-weight:700;}
+  .rhythm span:last-child{background:var(--mist); font-weight:600;}
+  .rhythm span b{color:var(--signal);}
+  .foot{font-family:var(--head); color:var(--faint); font-size:.8rem; font-style:italic; margin-top:46px; border-top:1px solid var(--mist); padding-top:14px;}
+  /* shared vocabulary: second heading tier — uppercase kicker for micro-labels */
+  .kicker{font-family:var(--head); font-size:.68rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--faint);}
+  a:focus-visible, button:focus-visible{outline:3px solid var(--deep); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+<template id="__bundler_thumbnail" data-bg-color="#2C1806">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#2C1806"/>
+    <rect x="0" y="620" width="1200" height="18" fill="#E8650E"/>
+    <rect x="330" y="230" width="150" height="240" fill="#F6EBDD"/><rect x="330" y="230" width="150" height="22" fill="#E8650E"/>
+    <rect x="525" y="230" width="150" height="240" fill="#F6EBDD"/><rect x="525" y="230" width="150" height="22" fill="#E8650E"/>
+    <rect x="720" y="230" width="150" height="240" fill="#F6EBDD"/><rect x="720" y="230" width="150" height="22" fill="#E8650E"/>
+  </svg>
+</template>
+</head>
+<body>
+<div class="head">
+  <h1>Unit Circles</h1>
+  <p>LAW 575 · Internet Law · Spring 2027 &middot; <a id="homeLink" href="#" target="_blank">← Course home</a> &middot; <a href="https://wakeforest.instructure.com/courses/86109" target="_blank">Canvas ↗</a></p>
+</div>
+<main>
+  <p class="lede">You write <b>one</b> client memo, on one of the four portfolio problems below, workshopped with a circle of three or four students writing the same problem.  Every student signs up for one circle in Canvas;  circles are capped and seats fill first come, first served.  Sign-up opens as announced on Canvas and <b>closes at the start of class on Mon, Feb 1 (Session 6)</b>;  whoever misses sign-up is placed at the professor's discretion.  Unit 2 is the only problem discussed before sign-up closes, so it fills first;  Unit 5's memo is due on the last day of classes, with a cure in the exam period.  Each card shows the unit's dates and lights the step that is live now.</p>
+  <div class="windows" id="windowCards"></div>
+  <p class="allics gcal" id="gcalWrap" hidden><a id="gcalLink" target="_blank" href="#">📅 Add the LAW 575 Internet Law calendar to Google Calendar ↗</a> -- every course date in one calendar that stays current:  if a date changes, your calendar changes with it.  After you add it, click the color dot next to LAW 575 Internet Law and choose Tangerine.</p>
+  <p class="allics"><a href="#" onclick="return dlAll();">Or download every course deadline as a calendar file (.ics)</a> -- a one-time copy that does not update.</p>
+  <p class="allics" style="font-size:.85rem">Every entry is titled <b>LAW 575 Internet Law</b>.  To import a file into Google Calendar, use a computer:  Settings > Import &amp; export, into a new calendar named LAW 575 Internet Law, then set that calendar's color to Tangerine.</p>
+  <h2>The Rhythm of a Circle</h2>
+  <div class="rhythm">
+    <span>sign up</span><span>draft <b>·</b> every issue in CREAC</span><span>two letters <b>·</b> against the Memo Rubric</span><span>circle meets</span><span>revise</span><span>submit</span><span>rubric met ✓ or one cure</span>
+  </div>
+  <p class="lede" style="margin-top:18px;">Drafts are due at the start of the session before your letters date and letters at the start of the letters date;  circles meet within the week that follows (Unit 2 meets in class at Session 14).  A draft or letters posted late still count until the close, 1:15 pm on the unit's memo date, and are recorded as late;  two or more late items across the term cost participation Honors.  Your draft and letters are part of the portfolio:  if either is missing at the close, the portfolio is not met.  The memo is accepted up to one week late and cannot then earn Honors Pass.  Memo feedback is aimed at about two weeks after the memo date.  The <a target="_blank" href="https://drive.google.com/file/d/1j3mjtqTFCF27dmXY4w1JEFn9H8ewFTql/preview">Circle Guide ↗</a> has every step, the Memo Rubric, and the prompts (Appendix A).</p>
+  <div class="foot">Where this page and the syllabus differ, the syllabus controls.</div>
+</main>
+<script>
+const CANVAS = {
+  // One line to swap if the course number ever changes;  every link on the page derives from it.
+  base: "https://wakeforest.instructure.com/courses/86109",   // the live course (Oct 17, 2026)
+  /* After the Canvas build, paste per-unit deep links below (keyed by unit number)
+     and the cards use them; units without one fall back to the generic page.
+     signup -> the unit's group-set page · drafts -> the unit's Draft Swap discussion
+     · submit -> the unit's Memo assignment. */
+  ids: {
+    signup: {},   // e.g. 2: CANVAS.base + "/groups#tab-12345"
+    drafts: {},   // e.g. 2: CANVAS.base + "/discussion_topics/67890"
+    submit: {}    // e.g. 2: CANVAS.base + "/assignments/13579"
+  },
+  /* The build has ONE Circles group set, ONE Circle Draft Swap discussion (a private thread per circle), and one
+     memo assignment per unit (Unit N Memo · Problem).  Pages are addressed by slug and survive course copies;
+     assignments and discussions need numeric IDs, so until those are pasted into ids above the links land on
+     Canvas's own index pages, one click from the item. */
+  signup:  u => (CANVAS.ids.signup[u]) || CANVAS.base + "/pages/circle-sign-up",
+  drafts:  u => (CANVAS.ids.drafts[u]) || CANVAS.base + "/discussion_topics",
+  submit:  u => (CANVAS.ids.submit[u]) || CANVAS.base + "/assignments",
+  modules: () => CANVAS.base + "/modules",          // Hypothesis annotation assignments live inside each unit's module
+  recordings: () => CANVAS.base + "/modules",       // TODO: point at the capture tool's course tab (e.g. .../external_tools/NN) once IT confirms where recordings publish
+  file:    name => CANVAS.base + "/files?search_term=" + encodeURIComponent(name)
+};
+
+const PROMPTS_DOC = "https://drive.google.com/file/d/1j3mjtqTFCF27dmXY4w1JEFn9H8ewFTql/preview";   // Circle Guide, Appendix A
+/* Dates mirror the syllabus table (Syllabus v21.0);  where they differ, the syllabus controls. */
+const WINDOWS = [
+  { unit:2, ch:"Ch. 2", pages:"pp. 55-71 and 72-85, 87-88", topic:"Jurisdiction",        prob:"SeaHaven",       page:84,  disc:"2027-01-27", drafts:"2027-02-24", letters:"2027-03-01", due:"2027-03-17", meet:"in class, Session 14 (Mon, Mar 1)" },
+  { unit:3, ch:"Ch. 4", pages:"pp. 187-272", topic:"Content Moderation",  prob:"CurrenC",        page:214, disc:"2027-02-10", drafts:"2027-03-17", letters:"2027-03-22", due:"2027-04-05", meet:"within the week after Mar 22" },
+  { unit:4, ch:"Ch. 5", pages:"pp. 388-433", topic:"Privacy",             prob:"Cookie Monster", page:420, disc:"2027-03-15", drafts:"2027-03-24", letters:"2027-03-29", due:"2027-04-12", meet:"within the week after Mar 29" },
+  { unit:5, ch:"Ch. 9", pages:"pp. 675-733", topic:"Platform Regulation", prob:"5thWheel",       page:692, disc:"2027-03-24", drafts:"2027-04-07", letters:"2027-04-12", due:"2027-04-19", meet:"within the week after Apr 12", note:"the last day of classes;  any cure falls in the exam period" }
+];
+const SIGNUP = "2027-02-01";
+/* The subscribe link printed by the Course Calendar Builder (an Apps Script in the professor's account).
+   Empty:  the Google Calendar button stays hidden and the file download remains. */
+const CAL_SUBSCRIBE = "";
+const COURSE_EVENTS = [
+  ["2027-01-11","First class (Session 1);  syllabus and technical primer"],
+  ["2027-01-13","Tech Digest:  primer annotated (this is also the first annotation set)"],
+  ["2027-01-17","Add deadline (Law School calendar)"],
+  ["2027-01-17","Tech Digest:  join a group (by 10:00 pm)"],
+  ["2027-01-17","Syllabus quiz due (11:59 pm;  part of participation)"],
+  ["2027-01-18","No class (Martin Luther King Jr. Day)"],
+  ["2027-01-24","Drop deadline (Law School calendar)"],
+  ["2027-01-25","First annotation set due for students who added after Jan 13 (1:15 pm)"],
+  ["2027-01-27","Tech Digest:  curation document and briefs in class (1:15 pm)"],
+  ["2027-02-01","SIAR prep set due (1:15 pm);  module in class"],
+  ["2027-02-01","Circle sign-up closes (start of class, 1:15 pm)"],
+  ["2027-02-01","Tech Digest:  reflections due (11:59 pm)"],
+  ["2027-02-08","SIAR practice problems due (1:15 pm);  SIAR quiz in class (one complete Part A attempt required)"],
+  ["2027-02-10","Syllabus quiz, Tech Digest, and SIAR block close (1:15 pm)"],
+  ["2027-03-08","Spring break (no class Mar 8-12)"],
+  ["2027-04-19","Last day of classes (Session 26, synthesis day)"],
+  /* Annotation sets:  due at the start of each reading session;  each closes at 1:15 pm two weeks later
+     (the first on Jan 20;  closes that would fall in spring break move to Mar 15;  closes after classes end hold, whether or not class meets) */
+  ["2027-01-20","Annotation set for Session 3 due (1:15 pm); late window closes for the Sessions 1 and 2 set (1:15 pm)"],
+  ["2027-01-25","Annotation set for Session 4 due (1:15 pm)"],
+  ["2027-01-27","Annotation set for Session 5 due (1:15 pm)"],
+  ["2027-02-03","Annotation set for Session 7 due (1:15 pm); late window closes for the Session 3 set (1:15 pm)"],
+  ["2027-02-08","Late window closes for the Session 4 set (1:15 pm)"],
+  ["2027-02-10","Annotation set for Session 9 due (1:15 pm); late window closes for the Session 5 set (1:15 pm)"],
+  ["2027-02-15","Annotation set for Session 10 due (1:15 pm)"],
+  ["2027-02-17","Annotation set for Session 11 due (1:15 pm); late window closes for the Session 7 set (1:15 pm)"],
+  ["2027-02-22","Annotation set for Session 12 due (1:15 pm)"],
+  ["2027-02-24","Annotation set for Session 13 due (1:15 pm); late window closes for the Session 9 set (1:15 pm)"],
+  ["2027-03-01","Late window closes for the Session 10 set (1:15 pm)"],
+  ["2027-03-03","Annotation set for Session 15 due (1:15 pm); late window closes for the Session 11 set (1:15 pm)"],
+  ["2027-03-15","Annotation set for Session 16 due (1:15 pm); late window closes for the Session 12 and Session 13 sets (moved from spring break;  1:15 pm)"],
+  ["2027-03-17","Annotation set for Session 17 due (1:15 pm); late window closes for the Session 15 set (1:15 pm)"],
+  ["2027-03-22","Annotation set for Session 18 due (1:15 pm)"],
+  ["2027-03-24","Annotation set for Session 19 due (1:15 pm)"],
+  ["2027-03-29","Annotation set for Session 20 due (1:15 pm); late window closes for the Session 16 set (1:15 pm)"],
+  ["2027-03-31","Annotation set for Session 21 due (1:15 pm); late window closes for the Session 17 set (1:15 pm)"],
+  ["2027-04-05","Annotation set for Session 22 due (1:15 pm); late window closes for the Session 18 set (1:15 pm)"],
+  ["2027-04-07","Annotation set for Session 23 due (1:15 pm); late window closes for the Session 19 set (1:15 pm)"],
+  ["2027-04-12","Annotation set for Session 24 due (1:15 pm); late window closes for the Session 20 set (1:15 pm)"],
+  ["2027-04-14","Annotation set for Session 25 due (1:15 pm); late window closes for the Session 21 set (1:15 pm)"],
+  ["2027-04-19","Late window closes for the Session 22 set (1:15 pm)"],
+  ["2027-04-21","Late window closes for the Session 23 set (1:15 pm)"],
+  ["2027-04-26","Late window closes for the Session 24 set (1:15 pm)"],
+  ["2027-04-28","Late window closes for the Session 25 set (1:15 pm)"]
+];
+
+const fmt = iso => new Date(iso + "T23:59:00").toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric" });
+
+const today = () => new Date();
+
+function status(w){
+  const t = today();
+  if (t < new Date(w.disc + "T00:00:00")) return "upcoming";
+  if (t <= new Date(w.due + "T13:15:00")) return "open";
+  if (t <= new Date(new Date(w.due + "T13:15:00").getTime() + 7*86400000)) return "late week";   // the memo is accepted up to one week late
+  return "closed";
+}
+/* Which step is live right now?  signup (until Session 6) -> draft -> letters -> submit, else none. */
+function phase(w){
+  const t = today();
+  if (t <= new Date(SIGNUP + "T13:15:00")) return "signup";
+  if (t > new Date(new Date(w.due + "T13:15:00").getTime() + 7*86400000)) return "none";
+  if (t <= new Date(w.drafts + "T13:15:00")) return "drafts";
+  if (t <= new Date(w.letters + "T13:15:00")) return "letters";
+  return "submit";
+}
+function renderWindows(){
+  document.getElementById("windowCards").innerHTML = WINDOWS.map(w => {
+    const st = status(w);
+    return `<div class="card">
+      <div class="top"><span>Unit ${w.unit} · ${w.topic}</span>
+        <span class="badge ${st.replace(' ','-')}">${st}</span></div>
+      <div class="body">
+        <div class="prob">${w.prob} Problem</div>
+        <div class="page">Problem on p. ${w.page};  your memo draws only on the unit's pages, ${w.pages}</div>
+        <div class="promptline">Your memo answers the <a target="_blank" href="${PROMPTS_DOC}">${w.prob} prompt in the Circle Guide, Appendix A ↗</a>, from the unit's assigned pages only.</div>
+        <dl>
+          <dt>Discussed in class</dt><dd>${fmt(w.disc)}</dd>
+          <dt>Sign-up closes</dt><dd>${fmt(SIGNUP)} · start of class (all units)</dd>
+          <dt>Draft due</dt><dd>${fmt(w.drafts)} · start of class</dd>
+          <dt>Letters due</dt><dd>${fmt(w.letters)} · start of class</dd>
+          <dt>Circle meets</dt><dd>${w.meet}</dd>
+          <dt>Memo due</dt><dd>${fmt(w.due)} · start of class${w.note ? " · " + w.note : ""}</dd>
+        </dl>
+      </div>
+      <div class="acts">
+        <a class="${phase(w) === "signup" ? "now" : ""}" target="_blank" href="${CANVAS.signup(w.unit)}">Sign up ↗</a>
+        <a class="${phase(w) === "drafts" || phase(w) === "letters" ? "now" : ""}" target="_blank" href="${CANVAS.drafts(w.unit)}">Draft swap &amp; letters ↗</a>
+        <a class="${phase(w) === "submit" ? "now" : ""}" target="_blank" href="${CANVAS.submit(w.unit)}">Submit memo ↗</a>
+        <a href="#" onclick="return dlUnit(${w.unit});">📅</a>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+const plusDays = (iso, n) => new Date(new Date(iso + "T12:00:00").getTime() + n * 86400000).toISOString().slice(0, 10);
+function unitEvents(w){
+  return [
+    [w.disc,    `LAW 575 Internet Law · Unit ${w.unit} (${w.topic}):  ${w.prob} discussed in class`],
+    [w.drafts,  `LAW 575 Internet Law · Unit ${w.unit}:  circle draft due at the start of class`],
+    [w.letters, `LAW 575 Internet Law · Unit ${w.unit}:  circle letters due at the start of class;  ${w.unit === 2 ? "circle meets in class (Session 14)" : "circle meets within the week"}`],
+    [w.due,     `LAW 575 Internet Law · Unit ${w.unit}:  ${w.prob} memo due at the start of class;  circle draft and letters close (1:15 pm)`],
+    [plusDays(w.due, 7), `LAW 575 Internet Law · Unit ${w.unit}:  last day to submit a late ${w.prob} memo (1:15 pm;  a late memo cannot earn Honors Pass)`]
+  ];
+}
+
+function toICS(name, events){
+  const esc = t => t.replace(/\\/g,"\\\\").replace(/,/g,"\\,").replace(/;/g,"\\;");
+  const stamp = new Date().toISOString().replace(/[-:]/g,"").split(".")[0] + "Z";
+  const lines = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//LAW575//Course Site//EN","CALSCALE:GREGORIAN",
+    "X-WR-CALNAME:" + esc(name), "NAME:" + esc(name),
+    "COLOR:darkorange", "X-APPLE-CALENDAR-COLOR:#E8650E", "X-OUTLOOK-COLOR:#E8650E"];   /* calendar colour where the app honours it */
+  for (const [d, summary] of events){
+    const ymd = d.replace(/-/g,"");
+    const next = new Date(new Date(d + "T12:00:00").getTime() + 86400000);
+    const ymd2 = next.toISOString().slice(0,10).replace(/-/g,"");
+    lines.push("BEGIN:VEVENT",
+      "UID:" + ymd + "-" + esc(summary).replace(/[^A-Za-z0-9]/g,"").slice(0,40) + "@law575",
+      "DTSTAMP:" + stamp,
+      "DTSTART;VALUE=DATE:" + ymd,
+      "DTEND;VALUE=DATE:" + ymd2,
+      "SUMMARY:" + esc(summary),
+      "COLOR:darkorange",
+      "CATEGORIES:LAW 575 Internet Law",
+      "END:VEVENT");
+  }
+  lines.push("END:VCALENDAR");
+  return lines.join("\r\n");
+}
+
+function download(fname, text){
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type: "text/calendar" }));
+  a.download = fname;
+  document.body.appendChild(a); a.click(); a.remove();
+  return false;
+}
+
+function dlUnit(u){
+  const w = WINDOWS.find(x => x.unit === u);
+  return download(`LAW575_InternetLaw_Unit${u}_${w.prob.replace(/\s+/g,"")}.ics`, toICS(`LAW 575 Internet Law · Unit ${u}:  ${w.topic}`, unitEvents(w)));
+}
+
+function dlAll(){
+  const events = [...COURSE_EVENTS.map(e => [e[0], "LAW 575 Internet Law · " + e[1]])];
+  for (const w of WINDOWS) events.push(...unitEvents(w));
+  events.sort((a,b) => a[0].localeCompare(b[0]));
+  return download("LAW575_InternetLaw_All_Deadlines.ics", toICS("LAW 575 Internet Law · All Deadlines", events));
+}
+
+const homeLink = document.getElementById("homeLink");
+homeLink.href = "./"; homeLink.removeAttribute("target");
+renderWindows();
+if (CAL_SUBSCRIBE) { document.getElementById("gcalLink").href = CAL_SUBSCRIBE; document.getElementById("gcalWrap").hidden = false; }
+</script>
+</body>
+</html>
