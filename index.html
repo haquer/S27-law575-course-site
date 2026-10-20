@@ -73,6 +73,9 @@
   .passlist li{margin-bottom:7px;}
   .passlist b{font-family:var(--head); color:var(--barink);}
   .passlist a{color:var(--deep); font-weight:700;}
+  a.chip{text-decoration:none; cursor:pointer;}
+  a.chip:hover{text-decoration:underline;}
+  #fourweeks a{color:inherit; text-decoration:underline; text-decoration-color:var(--deep);}
   .essnote{font-family:var(--head); font-size:.8rem; color:var(--faint); margin-top:10px;}
   .essnote a{color:var(--deep); font-weight:700;}
   .essbody{font-size:.92rem;}
@@ -283,10 +286,10 @@
   <div class="ess">
     <h2>What passing requires, in summary</h2>
     <ol class="passlist">
-      <li><b>Attendance.</b>  At least 22 of the 26 sessions.  The first two absences are automatically excused;  the third and fourth are made up by watching the recording and posting a short synthesis within two weeks (or, where there is no recording or no reading, a short account agreed with the professor);  an absence not made up in time, or a fifth absence of any kind, means the requirement is not met.  Arrival after 1:20 pm is tardy;  device, early-departure, and post-notice tardy absences are ordinary absences.</li>
-      <li><b>Participation.</b>  The syllabus quiz at 100 percent, the Tech Digest Project complete, and 17 of the 21 annotation sets.  Honors:  all 21 sets and no more than one late item.</li>
-      <li><b>The SIAR block.</b>  The Session 6 prep set and practice problems, and the Session 8 quiz (one complete attempt at Part A, and Part B).</li>
-      <li><b>The portfolio.</b>  Your memo and your circle work (your draft and your letters):  one memo meeting the Memo Rubric; one cure cycle.  If your draft or your letters are missing at the close, 1:15 pm on the unit's memo date, the portfolio is not met.</li>
+      <li><b>Attendance.</b>  At least 22 of the 26 sessions.  The first two absences are automatically excused;  the third and fourth are made up by watching the recording and posting a short synthesis to the <a data-cv="makeup" target="_blank">Session Make-Up Board</a> within two weeks (or, where there is no recording or no reading, a short account agreed with the professor);  an absence not made up in time, or a fifth absence of any kind, means the requirement is not met.  Arrival after 1:20 pm is tardy;  device, early-departure, and post-notice tardy absences are ordinary absences.</li>
+      <li><b>Participation.</b>  The <a data-cv="quiz" target="_blank">syllabus quiz</a> at 100 percent, the Tech Digest Project complete, and 17 of the 21 annotation sets.  Honors:  all 21 sets and no more than one late item.</li>
+      <li><b>The SIAR block.</b>  The Session 6 <a data-cv="prep" target="_blank">prep set</a> and <a data-cv="practice" target="_blank">practice problems</a>, and the Session 8 <a data-cv="siar" target="_blank">quiz</a> (one complete attempt at Part A, and Part B).</li>
+      <li><b>The portfolio.</b>  Your memo and your circle work (your draft and your letters, posted in the <a data-cv="swap" target="_blank">Circle Draft Swap</a>):  one memo meeting the Memo Rubric; one cure cycle.  If your draft or your letters are missing at the close, 1:15 pm on the unit's memo date, the portfolio is not met.</li>
       <li><b>Citation integrity.</b>  No unresolved citation-integrity violation.</li>
     </ol>
     <p class="essnote">Honors Pass requires the Honors Pass level on participation, the SIAR block, and the portfolio.  This list is a summary; <a id="sylPass" target="_blank" href="#">the syllabus</a> is the source, and where the two differ, the syllabus controls.</p>
@@ -298,7 +301,7 @@
   </div>
   <div class="ess">
     <h2>Working with the professor</h2>
-    <p class="essbody">Course email is read and answered in batches, typically Tuesday and Friday mornings.  No reply after two batch days?  A resend is welcome and never counts against you.  For genuinely urgent matters, put URGENT in the subject line.  Office hours are Tuesdays and Fridays, 9:00-10:00 am, Worrell 3313;  <a target="_blank" href="https://calendar.app.google/Q8QhDmP6G8fz3Ps36">book a time on the office-hours calendar ↗</a>.</p>
+    <p class="essbody">Course email is read and answered in batches, typically Tuesday and Friday mornings.  A question whose answer helps everyone belongs on the <a data-cv="questions" target="_blank">Course Questions board</a> in Canvas.  No reply after two batch days?  A resend is welcome and never counts against you.  For genuinely urgent matters, put URGENT in the subject line.  Office hours are Tuesdays and Fridays, 9:00-10:00 am, Worrell 3313;  <a target="_blank" href="https://calendar.app.google/Q8QhDmP6G8fz3Ps36">book a time on the office-hours calendar ↗</a>.</p>
   </div>
 </section>
 
@@ -307,7 +310,7 @@
   <div class="pastnote">Recordings, lecture materials, and the annotation thread for each session, posted after class -- newest first.</div>
   <div class="pastgrid" id="pastGrid"></div>
 </section>
-<div class="foot">Course page v11.12 &middot; Oct 20, 2026 &middot; matches Syllabus v21.3.  SLO = formally reported Student Learning Outcome; Goals are the course's broader ambitions.  Portfolio dates move only with written notice on Canvas.  Where this page and the syllabus differ, the syllabus controls.</div>
+<div class="foot">Course page v11.13 &middot; Oct 20, 2026 &middot; matches Syllabus v21.3.  SLO = formally reported Student Learning Outcome; Goals are the course's broader ambitions.  Portfolio dates move only with written notice on Canvas.  Where this page and the syllabus differ, the syllabus controls.</div>
 <script>
 const comps = [
  {id:"port", name:"Portfolio (one memo)", pct:"the pass",
@@ -346,21 +349,21 @@ const outs = [
   full:"Learning Goal:  workshop a colleague's legal analysis constructively and revise your own work in response--the daily rhythm of law practice.  Built in the circles, and rehearsed daily in the margins through the pile-on note."}
 ];
 const rows = [
- {rd:1, when:"Wk 1 · Jan 11", what:"Foundations:  how computers & the internet work", chips:[["disc","The syllabus, including Working with me"],["disc","Syllabus quiz by Sun Jan 17 (part of participation; retake until every answer is right)"],["annot","First set Wed Jan 13, covering Sessions 1-2"],["tech","Digest primer Wed Jan 13;  groups by Sun Jan 17"],["cite","Generative AI policy read together"]]},
+ {rd:1, when:"Wk 1 · Jan 11", what:"Foundations:  how computers & the internet work", chips:[["disc","The syllabus, including Working with me"],["disc","Syllabus quiz by Sun Jan 17 (part of participation; retake until every answer is right)","quiz"],["annot","First set Wed Jan 13, covering Sessions 1-2","first13"],["tech","Digest primer Wed Jan 13;  groups by Sun Jan 17","td2"],["cite","Generative AI policy read together"]]},
  {rd:1, when:"Wk 2 · Jan 18", what:"Code as law · generativity  (no class Mon Jan 18)", chips:[]},
- {rd:1, when:"Wk 3 · Jan 25", what:"Is the internet a place?  · international enforcement", chips:[["disc","★ Dead Aim · ★ SeaHaven"],["tech","Digest briefs in class Wed Jan 27"]]},
- {rd:1, when:"Wk 4 · Feb 1", what:"SIAR block:  how government makes internet law", chips:[["circ","Circle sign-up closes Mon Feb 1"],["siar","Module in class Mon Feb 1;  practice problems by Mon Feb 8, 1:15 pm"],["siar","Children’s privacy Wed Feb 3"],["tech","Digest wrap:  reflections Mon Feb 1"]]},
- {rd:1, when:"Wk 5 · Feb 8", what:"SIAR quiz · content moderation", chips:[["siar","SIAR quiz in class Mon Feb 8"],["disc","★ CurrenC discussed Wed Feb 10"]]},
+ {rd:1, when:"Wk 3 · Jan 25", what:"Is the internet a place?  · international enforcement", chips:[["disc","★ Dead Aim · ★ SeaHaven"],["tech","Digest briefs in class Wed Jan 27","td3"]]},
+ {rd:1, when:"Wk 4 · Feb 1", what:"SIAR block:  how government makes internet law", chips:[["circ","Circle sign-up closes Mon Feb 1","signup"],["siar","Module in class Mon Feb 1;  practice problems by Mon Feb 8, 1:15 pm","practice"],["siar","Children’s privacy Wed Feb 3"],["tech","Digest wrap:  reflections Mon Feb 1","td4"]]},
+ {rd:1, when:"Wk 5 · Feb 8", what:"SIAR quiz · content moderation", chips:[["siar","SIAR quiz in class Mon Feb 8","siar"],["disc","★ CurrenC discussed Wed Feb 10"]]},
  {rd:1, when:"Wk 6 · Feb 15", what:"Intermediary liability · § 230 foundations", chips:[["annot","Margins stay busy -- § 230 threads"]]},
- {rd:1, when:"Wk 7 · Feb 22", what:"§ 230 scope · modern controversies", chips:[["circ","U2 drafts due Wed Feb 24"],["disc","Flipped videos before class"]]},
- {rd:1, when:"Wk 8 · Mar 1", what:"Workshop · consumer privacy", chips:[["circ","U2 letters due Mon Mar 1; Unit 2 circles meet"]]},
+ {rd:1, when:"Wk 7 · Feb 22", what:"§ 230 scope · modern controversies", chips:[["circ","U2 drafts due Wed Feb 24","swap"],["disc","Flipped videos before class"]]},
+ {rd:1, when:"Wk 8 · Mar 1", what:"Workshop · consumer privacy", chips:[["circ","U2 letters due Mon Mar 1; Unit 2 circles meet","swap"]]},
  {when:"Mar 8-12", what:"SPRING BREAK", chips:[["fb","No class; nothing due"]]},
- {rd:1, when:"Wk 9 · Mar 15", what:"FTC & California · EU privacy", chips:[["disc","★ Cookie Monster discussed Mon Mar 15"],["circ","U3 drafts due Wed Mar 17"],["port","U2 MEMO DUE Wed Mar 17"],["cite","Signed certification with every memo"]]},
- {rd:1, when:"Wk 10 · Mar 22", what:"Federalism · platform marketplaces", chips:[["circ","U3 letters due Mon Mar 22"],["circ","U4 drafts due Wed Mar 24"],["disc","★ 5thWheel discussed Wed Mar 24"]]},
- {rd:1, when:"Wk 11 · Mar 29", what:"Antitrust foundations · modern antitrust", chips:[["circ","U4 letters due Mon Mar 29"],["disc","★ Google Maps Wed Mar 31"]]},
- {rd:1, when:"Wk 12 · Apr 5", what:"Network neutrality · defective software", chips:[["port","U3 MEMO DUE Mon Apr 5"],["circ","U5 drafts due Wed Apr 7"],["disc","★ AI Confidential Wed Apr 7"]]},
- {rd:1, when:"Wk 13 · Apr 12", what:"Virtual property · blockchain", chips:[["port","U4 MEMO DUE Mon Apr 12"],["circ","U5 letters due Mon Apr 12"]]},
- {rd:1, when:"Wk 14 · Apr 19", what:"Synthesis Day · classes end Mon Apr 19", chips:[["port","U5 MEMO DUE Mon Apr 19"]]},
+ {rd:1, when:"Wk 9 · Mar 15", what:"FTC & California · EU privacy", chips:[["disc","★ Cookie Monster discussed Mon Mar 15"],["circ","U3 drafts due Wed Mar 17","swap"],["port","U2 MEMO DUE Wed Mar 17","memo2"],["cite","Signed certification with every memo"]]},
+ {rd:1, when:"Wk 10 · Mar 22", what:"Federalism · platform marketplaces", chips:[["circ","U3 letters due Mon Mar 22","swap"],["circ","U4 drafts due Wed Mar 24","swap"],["disc","★ 5thWheel discussed Wed Mar 24"]]},
+ {rd:1, when:"Wk 11 · Mar 29", what:"Antitrust foundations · modern antitrust", chips:[["circ","U4 letters due Mon Mar 29","swap"],["disc","★ Google Maps Wed Mar 31"]]},
+ {rd:1, when:"Wk 12 · Apr 5", what:"Network neutrality · defective software", chips:[["port","U3 MEMO DUE Mon Apr 5","memo3"],["circ","U5 drafts due Wed Apr 7","swap"],["disc","★ AI Confidential Wed Apr 7"]]},
+ {rd:1, when:"Wk 13 · Apr 12", what:"Virtual property · blockchain", chips:[["port","U4 MEMO DUE Mon Apr 12","memo4"],["circ","U5 letters due Mon Apr 12","swap"]]},
+ {rd:1, when:"Wk 14 · Apr 19", what:"Synthesis Day · classes end Mon Apr 19", chips:[["port","U5 MEMO DUE Mon Apr 19","memo5"]]},
  {when:"Exams → May", what:"Grading window", chips:[["fb","Cures within one week of the notice"],["cite","An unresolved citation violation blocks a pass"]]}
 ];
 /* The Tech Digest leads the rail through its final deadline (reflections, Feb 1);
@@ -389,6 +392,29 @@ const ANNOUNCEMENTS = [
 ];
 
 const CANVAS_BASE = "https://wakeforest.instructure.com/courses/88399";   // the live course;  one-line swap if the number changes
+/* CANVAS_LINKS:BEGIN  generated by kit/canvas_links.py from Canvas's own item lists;  do not edit by hand */
+const CV = {
+ "quiz": "https://wakeforest.instructure.com/courses/88399/assignments/733272",
+ "first13": "https://wakeforest.instructure.com/courses/88399/assignments/733252",
+ "first25": "https://wakeforest.instructure.com/courses/88399/assignments/733253",
+ "td2": "https://wakeforest.instructure.com/courses/88399/assignments/733256",
+ "td3": "https://wakeforest.instructure.com/courses/88399/assignments/733257",
+ "td4": "https://wakeforest.instructure.com/courses/88399/assignments/733258",
+ "media": "https://wakeforest.instructure.com/courses/88399/pages/tech-digest-media-library",
+ "signup": "https://wakeforest.instructure.com/courses/88399/pages/circle-sign-up",
+ "swap": "https://wakeforest.instructure.com/courses/88399/discussion_topics/507645",
+ "makeup": "https://wakeforest.instructure.com/courses/88399/discussion_topics/507646",
+ "questions": "https://wakeforest.instructure.com/courses/88399/discussion_topics/507647",
+ "prep": "https://wakeforest.instructure.com/courses/88399/assignments/733255",
+ "practice": "https://wakeforest.instructure.com/courses/88399/assignments/733254",
+ "siar": "https://wakeforest.instructure.com/courses/88399/pages/siar-quiz-parts-a-and-b",
+ "memo2": "https://wakeforest.instructure.com/courses/88399/assignments/733259",
+ "memo3": "https://wakeforest.instructure.com/courses/88399/assignments/733260",
+ "memo4": "https://wakeforest.instructure.com/courses/88399/assignments/733261",
+ "memo5": "https://wakeforest.instructure.com/courses/88399/assignments/733262"
+};
+/* CANVAS_LINKS:END */
+const cvA = (k, label) => CV[k] ? `<a href="${CV[k]}" target="_blank" onclick="event.stopPropagation()">${label} ↗</a>` : label;
 const RECORDINGS = CANVAS_BASE + "/modules";   // TODO: capture-tool tab once IT confirms; lecture slides live in the modules too
 const DOC = {   /* Student View addresses (kit/links.json);  the files keep these IDs across versions */
   syl:  "https://haquer.github.io/S27-law575-course-site/docs/LAW575_Internet_Law_Syllabus_Spring2027.pdf",
@@ -398,6 +424,14 @@ const DOC = {   /* Student View addresses (kit/links.json);  the files keep thes
   ag:   "https://haquer.github.io/S27-law575-course-site/docs/LAW575_Annotation_Guide_Spring2027.pdf",
   sm:   "https://haquer.github.io/S27-law575-course-site/docs/LAW575_SIAR_Module_Spring2027.pdf",
   coppa:"https://haquer.github.io/S27-law575-course-site/docs/LAW575_COPPA_Packet_Session6.pdf"
+};
+const CANVAS_FOR = {
+  syl:  [["Syllabus quiz","quiz"]],
+  annot:[["First set, pp. 13-24","first13"],["First set, pp. 25-43","first25"],["Session Make-Up Board (Hypothesis outage)","makeup"]],
+  port: [["Unit 2 memo","memo2"],["Unit 3 memo","memo3"],["Unit 4 memo","memo4"],["Unit 5 memo","memo5"]],
+  circ: [["Circle Sign-Up","signup"],["Circle Draft Swap","swap"]],
+  siar: [["SIAR prep set","prep"],["Practice problems","practice"],["SIAR Quiz page","siar"]],
+  tech: [["Join a Digest group","td2"],["Media Library","media"],["Curation document","td3"],["Reflection","td4"]]
 };
 const DOC_LINKS = {
   syl:  [["Syllabus", DOC.syl]],
@@ -476,11 +510,11 @@ const WIN = [
   {u:5, problem:"5thWheel",       disc:"2027-03-24", drafts:"2027-04-07", letters:"2027-04-12", due:"2027-04-19"}
 ];
 const TD_EVENTS = [
-  ["2027-01-17","Syllabus quiz due (part of participation)"],["2027-01-13","Tech Digest:  primer annotated"],["2027-01-17","Tech Digest:  join a group"],["2027-01-20","First annotation set closes (1:15 pm)"],["2027-01-25","First annotation set due for late adds (1:15 pm)"],
-  ["2027-01-27","Tech Digest:  curation doc + briefs"],["2027-02-01","Tech Digest:  reflections due"]
+  ["2027-01-17","Syllabus quiz due (part of participation)","quiz"],["2027-01-13","Tech Digest:  primer annotated","first13"],["2027-01-17","Tech Digest:  join a group","td2"],["2027-01-20","First annotation set closes (1:15 pm)","first13"],["2027-01-25","First annotation set due for late adds (1:15 pm)","first13"],
+  ["2027-01-27","Tech Digest:  curation doc + briefs","td3"],["2027-02-01","Tech Digest:  reflections due","td4"]
 ];
 const REGISTRAR_EVENTS = [["2027-01-17","Add deadline (Law School calendar)"],["2027-01-24","Drop deadline (Law School calendar)"]];
-const SIAR_EVENTS = [["2027-02-01","SIAR prep set due (1:15 pm); module in class"],["2027-02-08","SIAR practice problems due (1:15 pm)"],["2027-02-08","SIAR quiz in class"],["2027-02-10","Syllabus quiz, Tech Digest, and SIAR block close (1:15 pm)"]];
+const SIAR_EVENTS = [["2027-02-01","SIAR prep set due (1:15 pm); module in class","prep"],["2027-02-08","SIAR practice problems due (1:15 pm)","practice"],["2027-02-08","SIAR quiz in class","siar"],["2027-02-10","Syllabus quiz, Tech Digest, and SIAR block close (1:15 pm)"]];
 const nfmt = iso => new Date(iso + "T12:00:00").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
 const ASOF = new URLSearchParams(location.search).get("asof");   /* v2.7 test harness:  ?asof=YYYY-MM-DD */
 const ntoday = () => ASOF ? new Date(ASOF + "T12:00:00") : new Date();
@@ -540,17 +574,17 @@ function renderNow(){
   document.getElementById("nowClass").innerHTML = next
     ? `Next class ${nfmt(next[0])}:  <b>${next[1]}</b> · ${/^No new reading/i.test(next[2]) ? next[2] : `read ${next[2]}`}${watch}`
     : "The semester is complete -- recordings remain in Canvas.";
-  const ev = [...TD_EVENTS, ...REGISTRAR_EVENTS, ...SIAR_EVENTS, [SIGNUP, "Circle sign-up closes (all units)"]];
+  const ev = [...TD_EVENTS, ...REGISTRAR_EVENTS, ...SIAR_EVENTS, [SIGNUP, "Circle sign-up closes (all units)", "signup"]];
   for (const w of WIN){
     ev.push([w.disc,`Unit ${w.u} problem discussed in class`],
-            [w.drafts,`Unit ${w.u} drafts due`],[w.letters,`Unit ${w.u} letters due`],
-            [w.due,`Unit ${w.u} memo due`]);
+            [w.drafts,`Unit ${w.u} drafts due`,"swap"],[w.letters,`Unit ${w.u} letters due`,"swap"],
+            [w.due,`Unit ${w.u} memo due`,"memo"+w.u]);
   }
   ev.sort((a,b)=>a[0].localeCompare(b[0]));
   const horizon = new Date(t.getTime() + 28*86400000);
   const list = ev.filter(e => { const d=new Date(e[0]+"T23:59:00"); return d>=t && d<=horizon; });
   document.getElementById("fourweeks").innerHTML = list.length
-    ? list.map(e=>`<li><span>${e[1]}</span><b>${nfmt(e[0])}</b></li>`).join("")
+    ? list.map(e=>`<li><span>${e[2] && CV[e[2]] ? `<a href="${CV[e[2]]}" target="_blank">${e[1]} ↗</a>` : e[1]}</span><b>${nfmt(e[0])}</b></li>`).join("")
     : `<li><span>No deadlines fall in the next four weeks.</span></li>`;
   renderThisWeek();
 }
@@ -625,12 +659,14 @@ function render(){
     const detail = open ? `<div class="wkdetail">` + wk.map(s =>
       `<div><b>${nfmt(s[0])}</b> · ${s[1]} — <span class="rdg">${s[2]}</span>${segLine(s)}</div>`).join("") + `</div>` : "";
     return `<div class="row ${cls}${expandable ? " expandable" : ""}"${expandable ? ` onclick="toggleWk(${i})"` : ""}><div class="when">${r.when}</div><div class="what"><b>${r.what}</b>${caret}`+
-      r.chips.map(ch=>`<span class="chip ${ch[0]} ${ac&&ac.includes(ch[0])?"hit":""}">${ch[1]}</span>`).join("")+detail+`</div></div>`;
+      r.chips.map(ch=>(ch[2] && CV[ch[2]]) ? `<a class="chip ${ch[0]} ${ac&&ac.includes(ch[0])?"hit":""}" href="${CV[ch[2]]}" target="_blank" onclick="event.stopPropagation()" title="Open in Canvas">${ch[1]} ↗</a>` : `<span class="chip ${ch[0]} ${ac&&ac.includes(ch[0])?"hit":""}">${ch[1]}</span>`).join("")+detail+`</div></div>`;
   }).join("");
   const cap = document.getElementById("caption");
   const linksFor = id => {
     const L = DOC_LINKS[id] || [];
-    return L.length ? `<span class="caplinks">Open:  ` + L.map(([n,u])=>`<a href="${u}" target="_blank">${n} ↗</a>`).join(" · ") + `</span>` : "";
+    const C = (CANVAS_FOR[id] || []).filter(([n,k]) => CV[k]);
+    return (L.length ? `<span class="caplinks">Open:  ` + L.map(([n,u])=>`<a href="${u}" target="_blank">${n} ↗</a>`).join(" · ") + `</span>` : "") +
+           (C.length ? `<span class="caplinks">In Canvas:  ` + C.map(([n,k])=>`<a href="${CV[k]}" target="_blank">${n} ↗</a>`).join(" · ") + `</span>` : "");
   };
   if(!sel){ cap.innerHTML = "Click a component to trace its thread, or click an outcome above the timeline to see everything that builds it.  Start with The Syllabus to light the whole semester."; }
   else if(sel.type==='comp'){
@@ -714,6 +750,7 @@ const uL = document.getElementById("unitsLink"), uL2 = document.getElementById("
 uL.href = "units.html"; uL2.href = "units.html";
   DOC_LINKS.port.unshift(["Unit windows & calendar downloads", "units.html"]);
 document.getElementById("canvasLink").href = CANVAS_BASE;
+document.querySelectorAll("[data-cv]").forEach(a => { const u = CV[a.dataset.cv]; if (u) a.href = u; else a.removeAttribute("href"); });
 /* Inside the Canvas frame the Canvas link is redundant:  hide it (and its separator). */
 try {
   if (window.self !== window.top) {
